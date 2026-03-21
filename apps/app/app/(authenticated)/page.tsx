@@ -105,28 +105,31 @@ const App = async () => {
       <div className="flex flex-1 flex-col gap-6 p-4 pt-0">
         {/* Continue Learning Banner */}
         {continueItem && (
-          <div>
-            <h2 className="mb-3 text-lg font-semibold">Continue Learning</h2>
-            <Card className="bg-primary text-primary-foreground">
+          <div className="reveal-up">
+            <h2 className="mb-3 text-lg font-semibold tracking-tight">Continue Learning</h2>
+            <Card className="overflow-hidden border-[#d4c8b5] bg-[#2c231a] text-[#f5f0e8]">
               <CardContent className="flex items-center justify-between gap-4 p-6">
                 <div className="min-w-0 flex-1">
-                  <p className="text-primary-foreground/70 mb-1 text-sm">
+                  <p className="mb-1 text-sm text-[#c4b5a0]">
                     {continueItem.course.title}
                   </p>
-                  <p className="truncate font-semibold">
+                  <p className="truncate font-semibold text-[#f5f0e8]">
                     {continueItem.nextLesson?.title}
                   </p>
                   <div className="mt-3 flex items-center gap-3">
                     <Progress
                       value={continueItem.percent}
-                      className="bg-primary-foreground/20 flex-1 [&>div]:bg-primary-foreground"
+                      className="flex-1 bg-white/10 [&>div]:bg-[#c4b5a0]"
                     />
-                    <span className="text-primary-foreground/70 text-sm tabular-nums">
+                    <span className="text-sm tabular-nums text-[#c4b5a0]">
                       {continueItem.percent}%
                     </span>
                   </div>
                 </div>
-                <Button asChild variant="secondary" className="shrink-0">
+                <Button
+                  asChild
+                  className="shrink-0 rounded-full bg-[#f5f0e8] text-[#2c231a] hover:bg-white"
+                >
                   <Link
                     href={`/courses/${continueItem.course.slug}/lessons/${continueItem.nextLesson?.slug}`}
                   >
@@ -141,10 +144,10 @@ const App = async () => {
 
         {/* My Courses */}
         {coursesWithProgress.length > 0 && (
-          <div>
+          <div className="reveal-up-delay">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">My Courses</h2>
-              <Button asChild variant="ghost" size="sm">
+              <h2 className="text-lg font-semibold tracking-tight">My Courses</h2>
+              <Button asChild variant="ghost" size="sm" className="text-[#8b7355] hover:text-[#2c231a]">
                 <Link href="/courses">
                   Browse catalog
                   <ArrowRightIcon className="ml-1 h-4 w-4" />
@@ -163,7 +166,7 @@ const App = async () => {
                     }
                     className="group"
                   >
-                    <Card className="h-full transition-shadow group-hover:shadow-md">
+                    <Card className="h-full border-[#e8dfd0] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_40px_rgba(112,83,55,0.10)]">
                       <CardHeader className="pb-2">
                         <div className="mb-1 flex items-center justify-between">
                           <Badge variant={tierVariant[course.tier]}>
@@ -199,12 +202,12 @@ const App = async () => {
 
         {/* Discover Courses */}
         {discoveryCourses.length > 0 && (
-          <div>
+          <div className="reveal-up-delay-2">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-lg font-semibold tracking-tight">
                 {coursesWithProgress.length === 0 ? "Start Learning" : "Explore More"}
               </h2>
-              <Button asChild variant="ghost" size="sm">
+              <Button asChild variant="ghost" size="sm" className="text-[#8b7355] hover:text-[#2c231a]">
                 <Link href="/courses">
                   View all
                   <ArrowRightIcon className="ml-1 h-4 w-4" />
@@ -218,8 +221,8 @@ const App = async () => {
                   href={`/courses/${course.slug}`}
                   className="group"
                 >
-                  <Card className="h-full transition-shadow group-hover:shadow-md">
-                    <div className="bg-muted aspect-video rounded-t-lg" />
+                  <Card className="h-full border-[#e8dfd0] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_40px_rgba(112,83,55,0.10)]">
+                    <div className="aspect-video rounded-t-lg bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0]" />
                     <CardHeader>
                       <Badge variant={tierVariant[course.tier]} className="w-fit">
                         {course.tier === "FREE"
@@ -244,11 +247,11 @@ const App = async () => {
 
         {/* Empty state */}
         {coursesWithProgress.length === 0 && discoveryCourses.length === 0 && (
-          <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed p-12 text-center">
+          <div className="reveal-up flex flex-1 items-center justify-center rounded-2xl border border-dashed border-[#e8dfd0] p-12 text-center">
             <div>
-              <BookOpenIcon className="text-muted-foreground mx-auto mb-3 h-10 w-10" />
+              <BookOpenIcon className="mx-auto mb-3 h-10 w-10 text-[#8b7355]" />
               <p className="text-lg font-medium">No courses available yet</p>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 Check back soon for new content.
               </p>
             </div>

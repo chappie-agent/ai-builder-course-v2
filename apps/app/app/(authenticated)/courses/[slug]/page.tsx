@@ -98,30 +98,33 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
       <Header page={course.title} pages={["Courses"]} />
       <div className="flex flex-1 flex-col gap-6 p-4 pt-0">
         {/* Course Hero */}
-        <div className="bg-muted rounded-xl p-6">
+        <div className="reveal-up overflow-hidden rounded-2xl bg-[#2c231a] p-6 sm:p-8">
           <div className="mb-3 flex items-center gap-2">
-            <Badge variant={tierVariant[course.tier]}>
+            <Badge className="border-[#4a3f33] bg-[#362d22] text-[#c4b5a0] hover:bg-[#4a3f33]">
               {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"}
             </Badge>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-sm text-[#c4b5a0]/60">
               {totalLessons} lesson{totalLessons !== 1 ? "s" : ""} · {course.modules.length} module{course.modules.length !== 1 ? "s" : ""}
             </span>
           </div>
-          <h1 className="mb-2 text-3xl font-bold">{course.title}</h1>
-          <p className="text-muted-foreground max-w-2xl">{course.description}</p>
+          <h1 className="mb-2 text-3xl font-medium tracking-tight text-[#f5f0e8]">{course.title}</h1>
+          <p className="max-w-2xl text-[#c4b5a0]/80">{course.description}</p>
 
           <div className="mt-6 flex items-center gap-4">
             {isEnrolled ? (
               <>
-                <Button asChild>
+                <Button
+                  asChild
+                  className="rounded-full bg-[#f5f0e8] text-[#2c231a] hover:bg-white"
+                >
                   <Link href={firstLesson ? `/courses/${slug}/lessons/${firstLesson.slug}` : "#"}>
                     <PlayCircleIcon className="mr-2 h-4 w-4" />
                     {completedCount > 0 ? "Continue Learning" : "Start Course"}
                   </Link>
                 </Button>
-                <div className="flex flex-1 max-w-sm items-center gap-3">
-                  <Progress value={progressPercent} className="flex-1" />
-                  <span className="text-muted-foreground text-sm tabular-nums">
+                <div className="flex max-w-sm flex-1 items-center gap-3">
+                  <Progress value={progressPercent} className="flex-1 bg-white/10 [&>div]:bg-[#c4b5a0]" />
+                  <span className="text-sm tabular-nums text-[#c4b5a0]">
                     {progressPercent}%
                   </span>
                 </div>
@@ -133,7 +136,11 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
                   await enrollInCourse(course.id);
                 }}
               >
-                <Button type="submit" size="lg">
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="rounded-full bg-[#f5f0e8] text-[#2c231a] hover:bg-white"
+                >
                   Enroll Now — {course.tier === "FREE" ? "Free" : `${course.tier}`}
                 </Button>
               </form>
@@ -142,15 +149,15 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
         </div>
 
         {/* Curriculum */}
-        <div>
-          <h2 className="mb-4 text-xl font-semibold">Curriculum</h2>
+        <div className="reveal-up-delay">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">Curriculum</h2>
           <div className="space-y-3">
             {course.modules.map((module) => (
-              <Card key={module.id}>
+              <Card key={module.id} className="border-[#e8dfd0]">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base">{module.title}</CardTitle>
                   {module.description && (
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-sm text-muted-foreground">
                       {module.description}
                     </p>
                   )}
@@ -164,26 +171,26 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
                           {isEnrolled ? (
                             <Link
                               href={`/courses/${slug}/lessons/${lesson.slug}`}
-                              className="hover:bg-muted flex items-center gap-3 rounded-md px-2 py-2 text-sm transition-colors"
+                              className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm transition-all duration-200 hover:bg-[#f0e9dd]"
                             >
                               {isDone ? (
-                                <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-500" />
+                                <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
                               ) : (
-                                <CircleIcon className="text-muted-foreground h-4 w-4 shrink-0" />
+                                <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
                               )}
                               <span>{lesson.title}</span>
                               {lesson.duration && (
-                                <span className="text-muted-foreground ml-auto tabular-nums">
+                                <span className="ml-auto tabular-nums text-muted-foreground">
                                   {Math.floor(lesson.duration / 60)}m
                                 </span>
                               )}
                             </Link>
                           ) : (
-                            <div className="flex items-center gap-3 rounded-md px-2 py-2 text-sm">
-                              <CircleIcon className="text-muted-foreground h-4 w-4 shrink-0" />
+                            <div className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm">
+                              <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
                               <span className="text-muted-foreground">{lesson.title}</span>
                               {lesson.duration && (
-                                <span className="text-muted-foreground ml-auto tabular-nums">
+                                <span className="ml-auto tabular-nums text-muted-foreground">
                                   {Math.floor(lesson.duration / 60)}m
                                 </span>
                               )}

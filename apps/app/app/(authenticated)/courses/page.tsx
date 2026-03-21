@@ -36,15 +36,15 @@ const CoursesPage = async () => {
     <>
       <Header page="Catalog" pages={["Courses"]} />
       <div className="flex flex-1 flex-col gap-6 p-4 pt-0">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Course Catalog</h2>
+        <div className="reveal-up">
+          <h2 className="text-2xl font-semibold tracking-tight">Course Catalog</h2>
           <p className="text-muted-foreground">
             {courses.length} course{courses.length !== 1 ? "s" : ""} available
           </p>
         </div>
 
         {courses.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed p-8 text-center">
+          <div className="reveal-up-delay flex flex-1 items-center justify-center rounded-2xl border border-dashed border-[#e8dfd0] p-8 text-center">
             <div>
               <p className="text-lg font-medium">No courses available yet</p>
               <p className="text-muted-foreground text-sm">
@@ -53,15 +53,15 @@ const CoursesPage = async () => {
             </div>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="reveal-up-delay grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {courses.map((course) => (
               <Link
                 key={course.id}
                 href={`/courses/${course.slug}`}
                 className="group"
               >
-                <Card className="h-full transition-shadow group-hover:shadow-md">
-                  <div className="bg-muted aspect-video rounded-t-lg" />
+                <Card className="h-full border-[#e8dfd0] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_40px_rgba(112,83,55,0.10)]">
+                  <div className="aspect-video rounded-t-lg bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0]" />
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <Badge variant={tierVariant[course.tier]}>

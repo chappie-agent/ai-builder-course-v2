@@ -1,2 +1,105 @@
 @import "tailwindcss";
 @import "@repo/design-system/styles/globals.css";
+
+/* ── Warm Brown/Cream Theme — matches marketing site palette ───────────── */
+:root {
+  --background: #faf7f2;
+  --foreground: #2c231a;
+  --card: #fdfaf6;
+  --card-foreground: #2c231a;
+  --popover: #fdfaf6;
+  --popover-foreground: #2c231a;
+  --primary: #2c231a;
+  --primary-foreground: #f5f0e8;
+  --secondary: #f0e9dd;
+  --secondary-foreground: #2c231a;
+  --muted: #f0e9dd;
+  --muted-foreground: #6b5c4c;
+  --accent: #ede6da;
+  --accent-foreground: #2c231a;
+  --border: #e8dfd0;
+  --input: #e8dfd0;
+  --ring: #8b7355;
+  --sidebar: #f5f0e8;
+  --sidebar-foreground: #2c231a;
+  --sidebar-primary: #2c231a;
+  --sidebar-primary-foreground: #f5f0e8;
+  --sidebar-accent: #ede6da;
+  --sidebar-accent-foreground: #2c231a;
+  --sidebar-border: #e8dfd0;
+  --sidebar-ring: #8b7355;
+}
+
+.dark {
+  --background: #1a140e;
+  --foreground: #f5f0e8;
+  --card: #2c231a;
+  --card-foreground: #f5f0e8;
+  --popover: #2c231a;
+  --popover-foreground: #f5f0e8;
+  --primary: #f5f0e8;
+  --primary-foreground: #2c231a;
+  --secondary: #362d22;
+  --secondary-foreground: #f5f0e8;
+  --muted: #362d22;
+  --muted-foreground: #c4b5a0;
+  --accent: #4a3f33;
+  --accent-foreground: #f5f0e8;
+  --border: #4a3f33;
+  --input: #4a3f33;
+  --ring: #8b7355;
+  --sidebar: #241c14;
+  --sidebar-foreground: #f5f0e8;
+  --sidebar-primary: #f5f0e8;
+  --sidebar-primary-foreground: #2c231a;
+  --sidebar-accent: #362d22;
+  --sidebar-accent-foreground: #f5f0e8;
+  --sidebar-border: #4a3f33;
+  --sidebar-ring: #8b7355;
+}
+
+/* ── Marketing-site reveal animations ─────────────────────────────────── */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-up {
+  opacity: 0;
+  animation: revealUp 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.reveal-up-delay {
+  opacity: 0;
+  animation: revealUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+  will-change: transform, opacity;
+}
+
+.reveal-up-delay-2 {
+  opacity: 0;
+  animation: revealUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 220ms forwards;
+  will-change: transform, opacity;
+}
+
+.reveal-up-delay-3 {
+  opacity: 0;
+  animation: revealUp 700ms cubic-bezier(0.22, 1, 0.36, 1) 320ms forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up,
+  .reveal-up-delay,
+  .reveal-up-delay-2,
+  .reveal-up-delay-3 {
+    opacity: 1;
+    animation: none;
+  }
+}

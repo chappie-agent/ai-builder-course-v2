@@ -120,19 +120,19 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       <Header page={lesson.title} pages={["Courses", course.title]} />
       <div className="flex flex-1 flex-col gap-0">
         {/* Progress bar */}
-        <div className="flex items-center gap-3 border-b px-4 py-2">
-          <span className="text-muted-foreground text-xs">
+        <div className="flex items-center gap-3 border-b border-[#e8dfd0] bg-[#faf7f2] px-4 py-2">
+          <span className="text-xs text-[#8b7355]">
             {completedIds.size}/{allLessons.length} lessons
           </span>
           <Progress value={progressPercent} className="flex-1" />
-          <span className="text-muted-foreground text-xs tabular-nums">
+          <span className="text-xs tabular-nums text-[#8b7355]">
             {progressPercent}%
           </span>
         </div>
 
         <div className="flex flex-1 flex-col gap-6 p-4">
           {/* Video Player */}
-          <div className="bg-muted w-full overflow-hidden rounded-xl">
+          <div className="reveal-up w-full overflow-hidden rounded-2xl bg-[#2c231a]">
             {lesson.videoUrl ? (
               <iframe
                 src={lesson.videoUrl}
@@ -142,8 +142,8 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                 title={lesson.title}
               />
             ) : (
-              <div className="bg-muted flex aspect-video items-center justify-center">
-                <p className="text-muted-foreground text-sm">
+              <div className="flex aspect-video items-center justify-center">
+                <p className="text-sm text-[#c4b5a0]">
                   No video available for this lesson
                 </p>
               </div>
@@ -151,27 +151,27 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           </div>
 
           {/* Lesson header */}
-          <div className="flex items-start justify-between gap-4">
+          <div className="reveal-up-delay flex items-start justify-between gap-4">
             <div>
               <div className="mb-1 flex items-center gap-2">
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-[#8b7355]">
                   {lesson.module.title}
                 </span>
                 {lesson.duration && (
                   <>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-[#c4b5a0]">·</span>
+                    <span className="text-sm text-muted-foreground">
                       {Math.floor(lesson.duration / 60)}m
                     </span>
                   </>
                 )}
               </div>
-              <h1 className="text-2xl font-bold">{lesson.title}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
             </div>
 
             {isCompleted ? (
-              <Badge variant="secondary" className="shrink-0">
-                <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-500" />
+              <Badge variant="secondary" className="shrink-0 border-[#e8dfd0]">
+                <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-600" />
                 Completed
               </Badge>
             ) : (
@@ -181,7 +181,11 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                   await markLessonComplete(lesson.id, slug, lessonSlug);
                 }}
               >
-                <Button type="submit" variant="outline" className="shrink-0">
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
+                >
                   <CheckCircle2Icon className="mr-2 h-4 w-4" />
                   Mark as Complete
                 </Button>
@@ -191,7 +195,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
 
           {/* Lesson Content */}
           {lesson.content && (
-            <div className="prose dark:prose-invert max-w-none">
+            <div className="reveal-up-delay-2 prose max-w-none dark:prose-invert">
               <div className="whitespace-pre-wrap text-sm leading-relaxed">
                 {lesson.content}
               </div>
@@ -199,18 +203,16 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between border-t pt-4">
+          <div className="flex items-center justify-between border-t border-[#e8dfd0] pt-4">
             {prevLesson ? (
-              <Button asChild variant="outline">
-                <Link
-                  href={`/courses/${slug}/lessons/${prevLesson.slug}`}
-                >
+              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
+                <Link href={`/courses/${slug}/lessons/${prevLesson.slug}`}>
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
                   {prevLesson.title}
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="ghost">
+              <Button asChild variant="ghost" className="text-[#8b7355] hover:text-[#2c231a]">
                 <Link href={`/courses/${slug}`}>
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
                   Back to Course
@@ -219,16 +221,14 @@ const LessonPage = async ({ params }: LessonPageProps) => {
             )}
 
             {nextLesson ? (
-              <Button asChild>
-                <Link
-                  href={`/courses/${slug}/lessons/${nextLesson.slug}`}
-                >
+              <Button asChild className="rounded-full bg-[#2c231a] text-[#f5f0e8] hover:bg-[#3d3127]">
+                <Link href={`/courses/${slug}/lessons/${nextLesson.slug}`}>
                   {nextLesson.title}
                   <ChevronRightIcon className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
                 <Link href={`/courses/${slug}`}>
                   Course Complete!
                   <ChevronRightIcon className="ml-2 h-4 w-4" />
