@@ -17,3 +17,96 @@ model Page {
   id   Int    @id @default(autoincrement())
   name String
 }
+
+// ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum CourseTier {
+  FREE
+  MINI
+  FULL
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+// ─── Course Models ───────────────────────────────────────────────────────────
+
+model Course {
+  id          String     @id @default(uuid())
+  title       String
+  slug        String     @unique
+  description String     @db.Text
+  imageUrl    String?
+  price       Float      @default(0)
+  tier        CourseTier @default(FREE)
+  published   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  modules     Module[]
+  enrollments Enrollment[]
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  courseId    String
+  title       String
+  description String?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons Lesson[]
+
+  @@index([courseId])
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  moduleId  String
+  title     String
+  slug      String
+  order     Int
+  videoUrl  String?
+  content   String?  @db.Text
+  duration  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  module   Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress LessonProgress[]
+
+  @@unique([moduleId, slug])
+  @@index([moduleId])
+}
+
+model Enrollment {
+  id          String           @id @default(uuid())
+  userId      String
+  courseId    String
+  status      EnrollmentStatus @default(ACTIVE)
+  enrolledAt  DateTime         @default(now())
+  completedAt DateTime?
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model LessonProgress {
+  id          String    @id @default(uuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([lessonId])
+}
