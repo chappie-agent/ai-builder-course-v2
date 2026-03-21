@@ -42,6 +42,7 @@ import {
   ChevronRightIcon,
   FolderIcon,
   FrameIcon,
+  GraduationCapIcon,
   LifeBuoyIcon,
   MapIcon,
   MoreHorizontalIcon,
@@ -68,10 +69,26 @@ const data = {
   },
   navMain: [
     {
+      title: "Courses",
+      url: "/courses",
+      icon: GraduationCapIcon,
+      isActive: false,
+      items: [
+        {
+          title: "Browse Catalog",
+          url: "/courses",
+        },
+        {
+          title: "My Learning",
+          url: "/",
+        },
+      ],
+    },
+    {
       title: "Playground",
       url: "#",
       icon: SquareTerminalIcon,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "History",
