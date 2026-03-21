@@ -32,7 +32,7 @@ const CoursesPage = async () => {
         select: { modules: true },
       },
     },
-  }).catch(() => []);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
 
   return (
     <>

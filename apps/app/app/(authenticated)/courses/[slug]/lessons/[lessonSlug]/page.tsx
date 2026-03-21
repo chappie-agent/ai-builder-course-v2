@@ -27,7 +27,7 @@ export async function generateMetadata({
   const lesson = await database.lesson.findFirst({
     where: { slug: lessonSlug, module: { course: { slug } } },
     select: { title: true },
-  }).catch(() => null);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
   return { title: lesson?.title ?? "Lesson" };
 }
 
@@ -46,7 +46,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       course: { slug },
       status: { in: ["ACTIVE", "COMPLETED"] },
     },
-  }).catch(() => null);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
 
   if (!enrollment) {
     redirect(`/courses/${slug}`);
@@ -81,7 +81,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         select: { completed: true },
       },
     },
-  }).catch(() => null);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
 
   if (!lesson) {
     notFound();
@@ -108,7 +108,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       completed: true,
     },
     select: { lessonId: true },
-  }).catch(() => []);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
   const completedIds = new Set(progressIds.map((p) => p.lessonId));
   const progressPercent =
     allLessons.length > 0

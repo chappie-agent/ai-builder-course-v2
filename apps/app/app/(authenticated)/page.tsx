@@ -63,7 +63,7 @@ const App = async () => {
       },
     },
     orderBy: { enrolledAt: "desc" },
-  }).catch(() => []);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
 
   // Build progress data per course
   const coursesWithProgress = enrollments.map((enrollment) => {
@@ -100,7 +100,7 @@ const App = async () => {
     },
     take: 3,
     orderBy: { createdAt: "desc" },
-  }).catch(() => []);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
 
   return (
     <>
