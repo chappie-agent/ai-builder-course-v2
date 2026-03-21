@@ -73,15 +73,15 @@ export const ContactForm = ({ dictionary }: ContactFormProps) => {
           <div className="mt-6 space-y-5">
             <div className="grid gap-2">
               <Label htmlFor="firstname">{dictionary.web.contact.hero.form.firstName}</Label>
-              <Input id="firstname" type="text" className="h-12 rounded-xl border-[#d8c8b5] bg-white" />
+              <Input id="firstname" type="text" className="h-12 rounded-xl border border-[#d8c8b5] bg-white px-4 outline-none focus-visible:ring-0 focus-visible:ring-offset-0" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="lastname">{dictionary.web.contact.hero.form.lastName}</Label>
-              <Input id="lastname" type="text" className="h-12 rounded-xl border-[#d8c8b5] bg-white" />
+              <Input id="lastname" type="text" className="h-12 rounded-xl border border-[#d8c8b5] bg-white px-4 outline-none focus-visible:ring-0 focus-visible:ring-offset-0" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" className="h-12 rounded-xl border-[#d8c8b5] bg-white" />
+              <Input id="email" type="email" className="h-12 rounded-xl border border-[#d8c8b5] bg-white px-4 outline-none focus-visible:ring-0 focus-visible:ring-offset-0" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="goal">What do you want to build?</Label>
