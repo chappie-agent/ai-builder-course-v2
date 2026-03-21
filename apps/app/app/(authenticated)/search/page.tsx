@@ -28,7 +28,7 @@ const SearchPage = async ({ searchParams }: SearchPageProperties) => {
         contains: q,
       },
     },
-  });
+  }).catch(() => []);
   const { orgId } = await auth();
 
   if (!orgId) {

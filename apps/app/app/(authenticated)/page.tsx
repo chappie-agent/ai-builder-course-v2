@@ -35,6 +35,7 @@ const App = async () => {
   }
 
   // Fetch enrollments with course + progress data
+  // Wrapped in .catch(() => []) so missing DB tables show empty state instead of crashing
   const enrollments = await database.enrollment.findMany({
     where: {
       userId,
@@ -60,7 +61,7 @@ const App = async () => {
       },
     },
     orderBy: { enrolledAt: "desc" },
-  });
+  }).catch(() => []);
 
   // Build progress data per course
   const coursesWithProgress = enrollments.map((enrollment) => {
@@ -97,7 +98,7 @@ const App = async () => {
     },
     take: 3,
     orderBy: { createdAt: "desc" },
-  });
+  }).catch(() => []);
 
   return (
     <>

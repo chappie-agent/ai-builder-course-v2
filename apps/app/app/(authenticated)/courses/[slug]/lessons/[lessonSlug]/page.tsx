@@ -25,7 +25,7 @@ export async function generateMetadata({
   const lesson = await database.lesson.findFirst({
     where: { slug: lessonSlug, module: { course: { slug } } },
     select: { title: true },
-  });
+  }).catch(() => null);
   return { title: lesson?.title ?? "Lesson" };
 }
 
@@ -44,7 +44,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       course: { slug },
       status: { in: ["ACTIVE", "COMPLETED"] },
     },
-  });
+  }).catch(() => null);
 
   if (!enrollment) {
     redirect(`/courses/${slug}`);
@@ -79,7 +79,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         select: { completed: true },
       },
     },
-  });
+  }).catch(() => null);
 
   if (!lesson) {
     notFound();
@@ -106,7 +106,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       completed: true,
     },
     select: { lessonId: true },
-  });
+  }).catch(() => []);
   const completedIds = new Set(progressIds.map((p) => p.lessonId));
   const progressPercent =
     allLessons.length > 0

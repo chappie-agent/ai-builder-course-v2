@@ -30,7 +30,7 @@ const CoursesPage = async () => {
         select: { modules: true },
       },
     },
-  });
+  }).catch(() => []);
 
   return (
     <>
