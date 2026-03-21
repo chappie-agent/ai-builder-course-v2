@@ -1,12 +1,24 @@
 # Project State
 
-## Status
+## Current Status
 
-Planning complete. Ready to begin implementation.
+**Phase 1 — In Progress**
 
-## Current Phase
+### Phase 1: Course Data Model
 
-**Phase 1: Data Model + Prisma Schema** — not started
+- [x] Add `CourseTier` and `EnrollmentStatus` enums to Prisma schema
+- [x] Add `Course` model
+- [x] Add `Module` model
+- [x] Add `Lesson` model
+- [x] Add `Enrollment` model
+- [x] Add `LessonProgress` model
+- [x] Create seed script (`packages/database/prisma/seed.ts`)
+- [ ] Run `prisma migrate dev` against a live database
+- [ ] Run `prisma db seed` to populate sample data
+
+### Next Steps
+
+- Phase 2: API routes / Server Actions for courses, enrollment, and progress tracking
 
 ## Completed Work
 
@@ -15,18 +27,7 @@ Planning complete. Ready to begin implementation.
 - CTA and footer links fixed
 - Environment variables configured
 - GSD planning files created
-
-## Next Action
-
-Start Phase 1: Add `Course`, `Module`, `Lesson`, `Enrollment`, and `LessonProgress` models to the Prisma schema.
-
-Prisma schema location to check: `/apps/app/prisma/schema.prisma` or look in `packages/database/`.
-
-Steps:
-1. Locate the existing Prisma schema
-2. Add the new models with proper relations
-3. Run `prisma migrate dev` to create the migration
-4. Verify the migration succeeds
+- Phase 1 schema and seed script committed
 
 ## Decisions Made
 
@@ -34,12 +35,6 @@ Steps:
 - Video hosting via external URLs (YouTube/Loom/Vimeo embed) — no upload infrastructure needed
 - Clerk `userId` used as the user identifier in all course-related models
 - Free enrollment for MVP (no payment gate) — Phase 2 adds Stripe
-
-## Open Questions
-
-- Where is the Prisma schema located in this monorepo? (likely `packages/database/prisma/schema.prisma`)
-- Is there an existing seed script to extend?
-- What is the Vercel project name for `/apps/app`?
 
 ## Last Updated
 
