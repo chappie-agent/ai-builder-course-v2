@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { database } from "@repo/database";
 import { Badge } from "@repo/design-system/components/ui/badge";
 import {
