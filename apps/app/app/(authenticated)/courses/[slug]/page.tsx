@@ -26,7 +26,7 @@ export async function generateMetadata({
   params,
 }: CourseDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const course = await database.course.findUnique({ where: { slug } }).catch(() => null);
+  const course = await database.course.findUnique({ where: { slug } }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
   return {
     title: course?.title ?? "Course",
     description: course?.description,
@@ -58,7 +58,7 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
         ? { where: { userId } }
         : false,
     },
-  }).catch(() => null);
+  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
 
   if (!course) {
     notFound();
@@ -81,7 +81,7 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
         completed: true,
       },
       select: { lessonId: true },
-    }).catch(() => []);
+    }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
     completedLessonIds = new Set(progress.map((p) => p.lessonId));
   }
 
