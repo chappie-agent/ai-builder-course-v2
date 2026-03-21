@@ -8,20 +8,23 @@ const footerLinks = [
       { label: "Modules", href: "/#modules" },
       { label: "Cases", href: "/cases" },
       { label: "Pricing", href: "/pricing" },
-      { label: "FAQ", href: "/contact" },
+      { label: "FAQ", href: "/#faq" },
     ],
   },
   {
     heading: "Resources",
     links: [
       { label: "Blog", href: "/blog" },
+      // TODO: replace with real Community URL when available
       { label: "Community", href: "/contact" },
+      // TODO: replace with real OpenClaw URL when available
       { label: "OpenClaw", href: "/contact" },
     ],
   },
   {
     heading: "Company",
     links: [
+      // TODO: replace with real About page URL when available
       { label: "About", href: "/contact" },
       { label: "Contact", href: "/contact" },
       { label: "Privacy", href: "/legal/privacy" },
@@ -74,7 +77,7 @@ export const SiteFooter = () => {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#e8dfd0]/40 pt-8 sm:flex-row">
           <p className="text-xs text-[#8b7355]/60">
-            &copy; {new Date().getFullYear()} AI Cursus. All rights reserved.
+            &copy; {new Date().getFullYear()} AI Builder Course. All rights reserved.
           </p>
           <p className="text-xs text-[#8b7355]/40">
             Crafted with care

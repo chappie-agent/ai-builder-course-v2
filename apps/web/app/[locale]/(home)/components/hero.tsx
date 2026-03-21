@@ -61,7 +61,7 @@ export const Hero = () => {
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
               <Link
-                href="/contact"
+                href="/enroll"
                 className="group inline-flex items-center gap-2 rounded-full bg-[#2c231a] px-8 py-3.5 text-sm font-medium text-[#f5f0e8] transition-all hover:bg-[#3d3127] sm:text-base"
               >
                 Enroll now
