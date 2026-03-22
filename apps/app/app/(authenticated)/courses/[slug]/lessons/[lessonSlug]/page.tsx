@@ -4,6 +4,7 @@ import { auth } from "@repo/auth/server";
 import { database } from "@repo/database";
 import type { Slide } from "@repo/database";
 import { Button } from "@repo/design-system/components/ui/button";
+import { Separator } from "@repo/design-system/components/ui/separator";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -17,7 +18,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClockIcon,
+  LayersIcon,
   PlayCircleIcon,
+  SlidersHorizontalIcon,
 } from "lucide-react";
 
 interface LessonPageProps {
@@ -113,11 +116,36 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         ]}
       />
 
-      <div className="flex flex-1 flex-col">
-        {/* Video section - prominent, full width */}
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        <div className="mx-auto w-full max-w-4xl px-6 pt-6">
+          {/* 1. Large lesson title */}
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {lesson.title}
+          </h1>
+
+          {/* 2. Stats row below title */}
+          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <LayersIcon className="h-4 w-4 text-[#c4956a]" />
+              {lesson.module.title}
+            </span>
+            {lesson.duration && (
+              <span className="flex items-center gap-1.5">
+                <ClockIcon className="h-4 w-4 text-[#c4956a]" />
+                {lesson.duration} min
+              </span>
+            )}
+            <span className="flex items-center gap-1.5">
+              <PlayCircleIcon className="h-4 w-4 text-[#c4956a]" />
+              Les {currentIndex + 1} van {allLessons.length}
+            </span>
+          </div>
+        </div>
+
+        {/* 3. Video player - large, with rounded corners */}
         {lesson.videoUrl && (
-          <div className="w-full bg-[#1a1510]">
-            <div className="relative">
+          <div className="mx-auto mt-5 w-full max-w-4xl px-6">
+            <div className="overflow-hidden rounded-xl bg-[#1a1510]">
               <iframe
                 src={lesson.videoUrl}
                 className="aspect-video w-full"
@@ -129,52 +157,39 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           </div>
         )}
 
-        {/* No video: show a visual header instead */}
+        {/* No video: show visual header */}
         {!lesson.videoUrl && (
-          <div className="w-full bg-[#2c231a] px-6 py-12">
-            <div className="mx-auto flex max-w-3xl items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3d3128]">
-                <BookOpenIcon className="h-7 w-7 text-[#c4956a]" />
+          <div className="mx-auto mt-5 w-full max-w-4xl px-6">
+            <div className="flex items-center gap-5 rounded-xl bg-[#2c231a] px-8 py-10">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#3d3128]">
+                <BookOpenIcon className="h-8 w-8 text-[#c4956a]" />
               </div>
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-[#c4956a]">
-                  {lesson.module.title}
+                  Lesmateriaal
                 </p>
-                <h1 className="text-xl font-semibold text-[#f5f0e8]">
-                  {lesson.title}
-                </h1>
+                <p className="mt-1 text-sm text-[#c4b5a0]">
+                  Deze les bevat tekstuele content en oefeningen.
+                </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Content area */}
-        <div className="mx-auto w-full max-w-3xl px-6 py-6">
-          {/* Lesson info bar */}
-          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
-            <div className="flex flex-col gap-1">
-              {lesson.videoUrl && (
-                <h1 className="text-xl font-semibold tracking-tight">{lesson.title}</h1>
+        {/* 4. Action bar below video */}
+        <div className="mx-auto mt-4 w-full max-w-4xl px-6">
+          <div className="flex items-center justify-between">
+            {/* Left: slides button */}
+            <div className="flex items-center gap-2">
+              {slides && slides.length > 0 && (
+                <PresentationButton
+                  slides={slides}
+                  lessonTitle={lesson.title}
+                />
               )}
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <BookOpenIcon className="h-3.5 w-3.5" />
-                  {lesson.module.title}
-                </span>
-                {lesson.duration && (
-                  <span className="flex items-center gap-1">
-                    <ClockIcon className="h-3.5 w-3.5" />
-                    <span className="font-mono">{lesson.duration} min</span>
-                  </span>
-                )}
-                <span className="flex items-center gap-1">
-                  <PlayCircleIcon className="h-3.5 w-3.5" />
-                  Les {currentIndex + 1} van {allLessons.length}
-                </span>
-              </div>
             </div>
 
-            {/* Completion toggle */}
+            {/* Right: completion toggle */}
             {isCompleted ? (
               <form
                 action={async () => {
@@ -201,18 +216,15 @@ const LessonPage = async ({ params }: LessonPageProps) => {
               </form>
             )}
           </div>
+        </div>
 
-          {/* Presentation slides button */}
-          {slides && slides.length > 0 && (
-            <div className="mb-6">
-              <PresentationButton
-                slides={slides}
-                lessonTitle={lesson.title}
-              />
-            </div>
-          )}
+        {/* Divider */}
+        <div className="mx-auto mt-4 w-full max-w-4xl px-6">
+          <Separator />
+        </div>
 
-          {/* Lesson content */}
+        {/* 5. Content area */}
+        <div className="mx-auto w-full max-w-4xl px-6 py-6">
           {lesson.content && <MarkdownRenderer content={lesson.content} />}
 
           {/* Previous / Next navigation */}
