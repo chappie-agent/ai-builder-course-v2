@@ -11,11 +11,11 @@ import { notFound, redirect } from "next/navigation";
 import { markLessonComplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
 import { MarkdownRenderer } from "./components/markdown-renderer";
+import { PresentationButton } from "./components/presentation-modal";
 import {
   CheckCircle2Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  PresentationIcon,
 } from "lucide-react";
 
 interface LessonPageProps {
@@ -162,12 +162,10 @@ const LessonPage = async ({ params }: LessonPageProps) => {
 
           {slides && slides.length > 0 && (
             <div className="mt-6">
-              <Button variant="outline" className="rounded-full" asChild>
-                <Link href={`/courses/${slug}/lessons/${lessonSlug}?slides=true`}>
-                  <PresentationIcon className="mr-2 h-4 w-4" />
-                  Bekijk slides
-                </Link>
-              </Button>
+              <PresentationButton
+                slides={slides}
+                lessonTitle={lesson.title}
+              />
             </div>
           )}
 
