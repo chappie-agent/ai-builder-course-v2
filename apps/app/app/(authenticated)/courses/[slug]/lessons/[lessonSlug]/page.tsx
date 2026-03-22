@@ -1,34 +1,36 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import { auth } from "@repo/auth/server";
 import { database } from "@repo/database";
+import type { Slide } from "@repo/database";
 import { Badge } from "@repo/design-system/components/ui/badge";
 import { Button } from "@repo/design-system/components/ui/button";
-import { Progress } from "@repo/design-system/components/ui/progress";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { markLessonComplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
+import { MarkdownRenderer } from "./components/markdown-renderer";
 import {
   CheckCircle2Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  PresentationIcon,
 } from "lucide-react";
 
 interface LessonPageProps {
   params: Promise<{ slug: string; lessonSlug: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: LessonPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: LessonPageProps): Promise<Metadata> {
   const { slug, lessonSlug } = await params;
-  const lesson = await database.lesson.findFirst({
-    where: { slug: lessonSlug, module: { course: { slug } } },
-    select: { title: true },
-  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
-  return { title: lesson?.title ?? "Lesson" };
+  const lesson = await database.lesson
+    .findFirst({
+      where: { slug: lessonSlug, module: { course: { slug } } },
+      select: { title: true },
+    })
+    .catch(() => null);
+  return { title: lesson?.title ?? "Les" };
 }
 
 const LessonPage = async ({ params }: LessonPageProps) => {
@@ -39,142 +41,107 @@ const LessonPage = async ({ params }: LessonPageProps) => {
     redirect("/sign-in");
   }
 
-  // Verify enrollment
-  const enrollment = await database.enrollment.findFirst({
-    where: {
-      userId,
-      course: { slug },
-      status: { in: ["ACTIVE", "COMPLETED"] },
-    },
-  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
+  const enrollment = await database.enrollment
+    .findFirst({
+      where: {
+        userId,
+        course: { slug },
+        status: { in: ["ACTIVE", "COMPLETED"] },
+      },
+    })
+    .catch(() => null);
 
   if (!enrollment) {
     redirect(`/courses/${slug}`);
   }
 
-  // Fetch lesson with full course context for navigation
-  const lesson = await database.lesson.findFirst({
-    where: {
-      slug: lessonSlug,
-      module: { course: { slug } },
-    },
-    include: {
-      module: {
-        include: {
-          course: {
-            include: {
-              modules: {
-                orderBy: { order: "asc" },
-                include: {
-                  lessons: {
-                    orderBy: { order: "asc" },
-                    select: { id: true, title: true, slug: true, order: true },
+  const lesson = await database.lesson
+    .findFirst({
+      where: {
+        slug: lessonSlug,
+        module: { course: { slug } },
+      },
+      include: {
+        module: {
+          include: {
+            course: {
+              include: {
+                modules: {
+                  orderBy: { order: "asc" },
+                  include: {
+                    lessons: {
+                      orderBy: { order: "asc" },
+                      select: { id: true, title: true, slug: true, order: true },
+                    },
                   },
                 },
               },
             },
           },
         },
+        progress: {
+          where: { userId },
+          select: { completed: true },
+        },
       },
-      progress: {
-        where: { userId },
-        select: { completed: true },
-      },
-    },
-  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return null; });
+    })
+    .catch(() => null);
 
   if (!lesson) {
     notFound();
   }
 
   const isCompleted = lesson.progress.some((p) => p.completed);
+  const slides = (lesson.slides as Slide[] | null) ?? null;
 
-  // Build flat ordered lesson list for prev/next navigation
   const allLessons = lesson.module.course.modules.flatMap((m) =>
     m.lessons.map((l) => ({ ...l, moduleId: m.id }))
   );
   const currentIndex = allLessons.findIndex((l) => l.id === lesson.id);
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
-  const nextLesson =
-    currentIndex < allLessons.length - 1
-      ? allLessons[currentIndex + 1]
-      : null;
-
-  // Progress stats
-  const progressIds = await database.lessonProgress.findMany({
-    where: {
-      userId,
-      lessonId: { in: allLessons.map((l) => l.id) },
-      completed: true,
-    },
-    select: { lessonId: true },
-  }).catch((e) => { console.error('DB_QUERY_ERROR:', e); return []; });
-  const completedIds = new Set(progressIds.map((p) => p.lessonId));
-  const progressPercent =
-    allLessons.length > 0
-      ? Math.round((completedIds.size / allLessons.length) * 100)
-      : 0;
-
-  const course = lesson.module.course;
+  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
   return (
     <>
-      <Header page={lesson.title} pages={["Courses", course.title]} />
-      <div className="flex flex-1 flex-col gap-0">
-        {/* Progress bar */}
-        <div className="flex items-center gap-3 border-b border-[#e8dfd0] bg-[#faf7f2] px-4 py-2">
-          <span className="text-xs text-[#8b7355]">
-            {completedIds.size}/{allLessons.length} lessons
-          </span>
-          <Progress value={progressPercent} className="flex-1" />
-          <span className="text-xs tabular-nums text-[#8b7355]">
-            {progressPercent}%
-          </span>
-        </div>
-
-        <div className="flex flex-1 flex-col gap-6 p-4">
-          {/* Video Player */}
-          <div className="reveal-up w-full overflow-hidden rounded-2xl bg-[#2c231a]">
-            {lesson.videoUrl ? (
-              <iframe
-                src={lesson.videoUrl}
-                className="aspect-video w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={lesson.title}
-              />
-            ) : (
-              <div className="flex aspect-video items-center justify-center">
-                <p className="text-sm text-[#c4b5a0]">
-                  No video available for this lesson
-                </p>
-              </div>
-            )}
+      <Header
+        page={lesson.title}
+        pages={[
+          { label: "Curriculum", href: "/" },
+          { label: lesson.module.title },
+        ]}
+      />
+      <div className="flex flex-1 flex-col">
+        {lesson.videoUrl && (
+          <div className="w-full bg-[#1a1510]">
+            <iframe
+              src={lesson.videoUrl}
+              className="aspect-video w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={lesson.title}
+            />
           </div>
+        )}
 
-          {/* Lesson header */}
-          <div className="reveal-up-delay flex items-start justify-between gap-4">
+        <div className="mx-auto w-full max-w-3xl p-6">
+          <div className="flex items-start justify-between gap-4 mb-6">
             <div>
-              <div className="mb-1 flex items-center gap-2">
-                <span className="text-sm text-[#8b7355]">
-                  {lesson.module.title}
-                </span>
+              <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {lesson.module.title}
                 {lesson.duration && (
                   <>
-                    <span className="text-[#c4b5a0]">·</span>
-                    <span className="text-sm text-muted-foreground">
-                      {Math.floor(lesson.duration / 60)}m
-                    </span>
+                    {" "}&middot;{" "}
+                    <span className="font-mono">{lesson.duration} min</span>
                   </>
                 )}
-              </div>
-              <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
+              </p>
             </div>
 
             {isCompleted ? (
-              <Badge variant="secondary" className="shrink-0 border-[#e8dfd0]">
-                <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-600" />
-                Completed
+              <Badge variant="secondary" className="shrink-0">
+                <CheckCircle2Icon className="mr-1 h-3 w-3" />
+                Voltooid
               </Badge>
             ) : (
               <form
@@ -183,56 +150,55 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                   await markLessonComplete(lesson.id, slug, lessonSlug);
                 }}
               >
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
-                >
+                <Button type="submit" className="shrink-0 rounded-full">
                   <CheckCircle2Icon className="mr-2 h-4 w-4" />
-                  Mark as Complete
+                  Markeer als voltooid
                 </Button>
               </form>
             )}
           </div>
 
-          {/* Lesson Content */}
-          {lesson.content && (
-            <div className="reveal-up-delay-2 prose max-w-none dark:prose-invert">
-              <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                {lesson.content}
-              </div>
+          {lesson.content && <MarkdownRenderer content={lesson.content} />}
+
+          {slides && slides.length > 0 && (
+            <div className="mt-6">
+              <Button variant="outline" className="rounded-full" asChild>
+                <Link href={`/courses/${slug}/lessons/${lessonSlug}?slides=true`}>
+                  <PresentationIcon className="mr-2 h-4 w-4" />
+                  Bekijk slides
+                </Link>
+              </Button>
             </div>
           )}
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between border-t border-[#e8dfd0] pt-4">
+          <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
             {prevLesson ? (
-              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
+              <Button asChild variant="outline" className="rounded-full">
                 <Link href={`/courses/${slug}/lessons/${prevLesson.slug}`}>
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
                   {prevLesson.title}
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="ghost" className="text-[#8b7355] hover:text-[#2c231a]">
-                <Link href={`/courses/${slug}`}>
+              <Button asChild variant="ghost" className="text-muted-foreground">
+                <Link href="/">
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
-                  Back to Course
+                  Terug naar curriculum
                 </Link>
               </Button>
             )}
 
             {nextLesson ? (
-              <Button asChild className="rounded-full bg-[#2c231a] text-[#f5f0e8] hover:bg-[#3d3127]">
+              <Button asChild className="rounded-full">
                 <Link href={`/courses/${slug}/lessons/${nextLesson.slug}`}>
                   {nextLesson.title}
                   <ChevronRightIcon className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
-                <Link href={`/courses/${slug}`}>
-                  Course Complete!
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/">
+                  Cursus voltooid!
                   <ChevronRightIcon className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
