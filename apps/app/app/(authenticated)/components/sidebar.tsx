@@ -13,6 +13,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarInset,
+  SidebarProvider,
 } from "@repo/design-system/components/ui/sidebar";
 import { cn } from "@repo/design-system/lib/utils";
 import {
@@ -84,15 +85,15 @@ export const GlobalSidebar = ({ children, course }: GlobalSidebarProperties) => 
   const lessonSlugMatch = pathname.match(/\/lessons\/([^/]+)/);
   const currentLessonSlug = lessonSlugMatch?.[1] ?? null;
 
-  // On lesson pages, hide the left sidebar — the lesson page has its own right sidebar
+  // On lesson pages, hide the left sidebar — the lesson page has its own left sidebar
   const isLessonPage = pathname.includes("/lessons/");
 
   if (isLessonPage) {
-    return <>{children}</>;
+    return <div className="flex min-h-screen w-full flex-col">{children}</div>;
   }
 
   return (
-    <>
+    <SidebarProvider>
       <Sidebar variant="inset">
         {/* Header: Course Content title + progress */}
         <SidebarHeader className="border-b border-sidebar-accent px-4 py-4">
@@ -241,6 +242,6 @@ export const GlobalSidebar = ({ children, course }: GlobalSidebarProperties) => 
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>{children}</SidebarInset>
-    </>
+    </SidebarProvider>
   );
 };
