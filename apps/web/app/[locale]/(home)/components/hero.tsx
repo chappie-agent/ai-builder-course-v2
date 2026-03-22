@@ -11,6 +11,7 @@ import {
   Workflow,
 } from "lucide-react";
 import Link from "next/link";
+import { HeroCrossPattern } from "./hero-cross-pattern";
 
 const heroItems = [
   { label: "Agents", icon: Bot },
@@ -30,13 +31,7 @@ export const Hero = () => {
     <section className="relative w-full px-4 pt-8 pb-12 sm:px-6 md:pt-12 md:pb-20">
       <div className="mx-auto max-w-7xl">
         <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0] sm:rounded-[3rem]">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-            }}
-          />
+          <HeroCrossPattern />
 
           <div className="relative px-6 pt-16 pb-10 sm:px-12 sm:pt-24 sm:pb-16 md:px-16 md:pt-32 md:pb-8 lg:px-24">
             <div className="mb-8 flex justify-center md:mb-12">
