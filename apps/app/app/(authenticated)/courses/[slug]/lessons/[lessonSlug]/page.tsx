@@ -10,6 +10,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
+import { UserButton } from "@repo/auth/client";
 import {
   BookOpenIcon,
   CheckCircle2Icon,
@@ -19,8 +20,10 @@ import {
   CircleIcon,
   ClockIcon,
   GraduationCapIcon,
+  HelpCircleIcon,
   LayersIcon,
   PlayCircleIcon,
+  SettingsIcon,
   SignalIcon,
   UsersIcon,
 } from "lucide-react";
@@ -130,7 +133,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       <Header page={lesson.title} pages={["Courses", course.title]} />
       <div className="flex flex-1 flex-col gap-0 lg:flex-row">
         {/* ─── Left sidebar: Course Content ─── */}
-        <aside className="w-full shrink-0 border-b border-[#e8dfd0] bg-[#faf7f2] lg:w-[300px] lg:border-b-0 lg:border-r">
+        <aside className="flex w-full shrink-0 flex-col border-b border-[#e8dfd0] bg-[#faf7f2] lg:h-[calc(100vh-48px)] lg:w-[300px] lg:border-b-0 lg:border-r">
           {/* Sidebar header */}
           <div className="flex items-center justify-between border-b border-[#e8dfd0] px-5 py-4">
             <h2 className="font-semibold text-[#2c231a]">Course Content</h2>
@@ -140,7 +143,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           </div>
 
           {/* Module list */}
-          <div className="divide-y divide-[#e8dfd0] overflow-y-auto lg:max-h-[calc(100vh-64px)]">
+          <div className="divide-y divide-[#e8dfd0] overflow-y-auto lg:flex-1">
             {course.modules.map((mod) => {
               const modLessons = allLessons.filter((l) => l.moduleId === mod.id);
               const modCompleted = modLessons.filter((l) => completedIds.has(l.id)).length;
@@ -200,6 +203,38 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                 </details>
               );
             })}
+          </div>
+
+          {/* Sidebar footer */}
+          <div className="border-t border-[#e8dfd0] px-4 py-3">
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/settings"
+                className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-[#6b5c4c] transition-colors hover:bg-[#f0e9dd] hover:text-[#2c231a]"
+              >
+                <SettingsIcon className="h-4 w-4" />
+                Instellingen
+              </Link>
+              <Link
+                href="/support"
+                className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-[#6b5c4c] transition-colors hover:bg-[#f0e9dd] hover:text-[#2c231a]"
+              >
+                <HelpCircleIcon className="h-4 w-4" />
+                Support
+              </Link>
+            </div>
+            <div className="mt-3 border-t border-[#e8dfd0] pt-3">
+              <UserButton
+                appearance={{
+                  elements: {
+                    rootBox: "flex overflow-hidden w-full",
+                    userButtonBox: "flex-row-reverse",
+                    userButtonOuterIdentifier: "truncate pl-0",
+                  },
+                }}
+                showName
+              />
+            </div>
           </div>
         </aside>
 
