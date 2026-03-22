@@ -55,34 +55,16 @@ export const Instructor = () => {
             </div>
           </div>
 
-          {/* Right: photo — bleeds to edge, fades left into page bg */}
-          <div className="relative -mr-4 flex justify-end sm:-mr-6">
-            {/*
-              The image background in the photo is #faf7f2 — same as this section's
-              surrounding page colour. The left-side mask-image gradient fades the
-              photo edge to transparent so it blends seamlessly with the text column.
-              Swap /instructor.jpg for your actual photo.
-            */}
-            <div
-              className="relative h-[420px] w-full sm:h-[520px] md:h-[600px]"
-              style={{
-                maskImage:
-                  "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, transparent 0%, black 8%)",
-                WebkitMaskImage:
-                  "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, transparent 0%, black 8%)",
-                maskComposite: "intersect",
-                WebkitMaskComposite: "source-in",
-              }}
-            >
-              <Image
-                src="/instructor.png"
-                alt="Elwyn de Neve — instructor"
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-            </div>
+          {/* Right: photo — sharp left edge, rounded right corners only */}
+          <div className="relative h-[420px] overflow-hidden rounded-tr-[2rem] rounded-br-[2rem] sm:h-[520px] sm:rounded-tr-[3rem] sm:rounded-br-[3rem] md:h-[600px]">
+            <Image
+              src="/instructor.png"
+              alt="Elwyn de Neve — instructor"
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
           </div>
         </div>
       </div>
