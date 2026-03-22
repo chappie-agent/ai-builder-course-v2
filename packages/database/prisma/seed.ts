@@ -1,8 +1,10 @@
-import { PrismaClient } from '../generated';
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from '../generated/client';
 
 type Slide = { title: string; content: string; imageUrl?: string };
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
 
 const curriculum = [
   {
