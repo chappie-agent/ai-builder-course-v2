@@ -1,5 +1,7 @@
 import { PrismaClient } from '../generated';
 
+type Slide = { title: string; content: string; imageUrl?: string };
+
 const prisma = new PrismaClient();
 
 const curriculum = [
@@ -7,6 +9,7 @@ const curriculum = [
     title: 'AI Foundations',
     description: 'Understand the core concepts behind modern AI systems and large language models.',
     order: 1,
+    icon: '🎓',
     lessons: [
       {
         title: 'How Large Language Models Work',
@@ -38,6 +41,7 @@ const curriculum = [
     title: 'Building with AI',
     description: 'Integrate AI into real applications using the Vercel AI SDK and modern tooling.',
     order: 2,
+    icon: '🔧',
     lessons: [
       {
         title: 'Setting Up the Vercel AI SDK',
@@ -54,6 +58,24 @@ const curriculum = [
         videoUrl: 'https://www.youtube.com/watch?v=placeholder-2-2',
         content: `# Building a Streaming Chat Interface\n\nBuild a production-grade chat UI with real-time streaming responses, message history, and a polished UI using shadcn/ui and AI Elements.\n\n## Topics\n\n- useChat hook patterns\n- Streaming response handling\n- Message rendering with AI Elements\n- Error and loading states`,
         duration: 30,
+        slides: [
+          {
+            title: 'Wat is Streaming?',
+            content: 'Server-Sent Events sturen tokens één voor één naar de client, zodat de gebruiker direct tekst ziet verschijnen.',
+          },
+          {
+            title: 'De useChat Hook',
+            content: 'useChat beheert berichten, status, en streaming automatisch. Je hoeft alleen een API endpoint op te geven.',
+          },
+          {
+            title: 'Server-side: streamText',
+            content: 'streamText() geeft een StreamResponse terug die je direct als Response kunt retourneren vanuit een Route Handler.',
+          },
+          {
+            title: 'Best Practices',
+            content: 'Gebruik altijd error boundaries rond chat components. Toon een loading state tijdens het streamen. Cache waar mogelijk.',
+          },
+        ] as Slide[],
       },
       {
         title: 'Tool Calling and Structured Outputs',
@@ -69,6 +91,7 @@ const curriculum = [
     title: 'Shipping AI Products',
     description: 'Take your AI application from prototype to production with auth, payments, and observability.',
     order: 3,
+    icon: '🚀',
     lessons: [
       {
         title: 'Authentication and Access Control',
@@ -128,6 +151,7 @@ async function main() {
         title: moduleData.title,
         description: moduleData.description,
         order: moduleData.order,
+        icon: moduleData.icon,
       },
       create: {
         id: `seed-module-${moduleData.order}`,
@@ -135,6 +159,7 @@ async function main() {
         title: moduleData.title,
         description: moduleData.description,
         order: moduleData.order,
+        icon: moduleData.icon,
       },
     });
 
@@ -154,6 +179,7 @@ async function main() {
           videoUrl: lessonData.videoUrl,
           content: lessonData.content,
           duration: lessonData.duration,
+          slides: (lessonData as any).slides ?? undefined,
         },
         create: {
           moduleId: module.id,
@@ -163,6 +189,7 @@ async function main() {
           videoUrl: lessonData.videoUrl,
           content: lessonData.content,
           duration: lessonData.duration,
+          slides: (lessonData as any).slides ?? undefined,
         },
       });
 
