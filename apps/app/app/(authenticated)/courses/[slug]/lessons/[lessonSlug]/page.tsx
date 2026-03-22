@@ -130,7 +130,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
 
   return (
     <>
-      <Header page={lesson.title} pages={["Courses", course.title]} />
+      <Header page={lesson.title} pages={["Courses", course.title]} showSidebarTrigger={false} />
       <div className="flex flex-1 flex-col gap-0 lg:flex-row">
         {/* ─── Left sidebar: Course Content ─── */}
         <aside className="flex w-full shrink-0 flex-col border-b border-[#e8dfd0] bg-[#faf7f2] lg:h-[calc(100vh-48px)] lg:w-[300px] lg:border-b-0 lg:border-r">

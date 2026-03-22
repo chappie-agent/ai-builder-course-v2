@@ -19,13 +19,18 @@ interface HeaderProps {
   children?: ReactNode;
   page: string;
   pages: (string | BreadcrumbEntry)[];
+  showSidebarTrigger?: boolean;
 }
 
-export const Header = ({ pages, page, children }: HeaderProps) => (
+export const Header = ({ pages, page, children, showSidebarTrigger = true }: HeaderProps) => (
   <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border bg-card">
     <div className="flex items-center gap-2 px-4">
-      <SidebarTrigger className="-ml-1" />
-      <Separator className="mr-2 h-4" orientation="vertical" />
+      {showSidebarTrigger && (
+        <>
+          <SidebarTrigger className="-ml-1" />
+          <Separator className="mr-2 h-4" orientation="vertical" />
+        </>
+      )}
       <Breadcrumb>
         <BreadcrumbList>
           {pages.map((entry, index) => {
