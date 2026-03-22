@@ -424,9 +424,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                 </Button>
               )}
             </div>
-          </div>
         </div>
-
       </div>
     </div>
   );
