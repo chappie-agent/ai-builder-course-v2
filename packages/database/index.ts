@@ -14,3 +14,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export * from "./generated/client";
+
+export type Slide = {
+  title: string;
+  content: string;
+  imageUrl?: string;
+};
