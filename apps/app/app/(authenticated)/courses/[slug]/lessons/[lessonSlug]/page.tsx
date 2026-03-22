@@ -12,9 +12,12 @@ import { Header } from "../../../../components/header";
 import { MarkdownRenderer } from "./components/markdown-renderer";
 import { PresentationButton } from "./components/presentation-modal";
 import {
+  BookOpenIcon,
   CheckCircle2Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ClockIcon,
+  PlayCircleIcon,
 } from "lucide-react";
 
 interface LessonPageProps {
@@ -109,34 +112,69 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           { label: lesson.module.title },
         ]}
       />
+
       <div className="flex flex-1 flex-col">
+        {/* Video section - prominent, full width */}
         {lesson.videoUrl && (
           <div className="w-full bg-[#1a1510]">
-            <iframe
-              src={lesson.videoUrl}
-              className="aspect-video w-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={lesson.title}
-            />
+            <div className="relative">
+              <iframe
+                src={lesson.videoUrl}
+                className="aspect-video w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={lesson.title}
+              />
+            </div>
           </div>
         )}
 
-        <div className="mx-auto w-full max-w-3xl p-6">
-          <div className="flex items-start justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {lesson.module.title}
+        {/* No video: show a visual header instead */}
+        {!lesson.videoUrl && (
+          <div className="w-full bg-[#2c231a] px-6 py-12">
+            <div className="mx-auto flex max-w-3xl items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3d3128]">
+                <BookOpenIcon className="h-7 w-7 text-[#c4956a]" />
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-[#c4956a]">
+                  {lesson.module.title}
+                </p>
+                <h1 className="text-xl font-semibold text-[#f5f0e8]">
+                  {lesson.title}
+                </h1>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Content area */}
+        <div className="mx-auto w-full max-w-3xl px-6 py-6">
+          {/* Lesson info bar */}
+          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+            <div className="flex flex-col gap-1">
+              {lesson.videoUrl && (
+                <h1 className="text-xl font-semibold tracking-tight">{lesson.title}</h1>
+              )}
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <BookOpenIcon className="h-3.5 w-3.5" />
+                  {lesson.module.title}
+                </span>
                 {lesson.duration && (
-                  <>
-                    {" "}&middot;{" "}
+                  <span className="flex items-center gap-1">
+                    <ClockIcon className="h-3.5 w-3.5" />
                     <span className="font-mono">{lesson.duration} min</span>
-                  </>
+                  </span>
                 )}
-              </p>
+                <span className="flex items-center gap-1">
+                  <PlayCircleIcon className="h-3.5 w-3.5" />
+                  Les {currentIndex + 1} van {allLessons.length}
+                </span>
+              </div>
             </div>
 
+            {/* Completion toggle */}
             {isCompleted ? (
               <form
                 action={async () => {
@@ -164,10 +202,9 @@ const LessonPage = async ({ params }: LessonPageProps) => {
             )}
           </div>
 
-          {lesson.content && <MarkdownRenderer content={lesson.content} />}
-
+          {/* Presentation slides button */}
           {slides && slides.length > 0 && (
-            <div className="mt-6">
+            <div className="mb-6">
               <PresentationButton
                 slides={slides}
                 lessonTitle={lesson.title}
@@ -175,19 +212,23 @@ const LessonPage = async ({ params }: LessonPageProps) => {
             </div>
           )}
 
-          <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
+          {/* Lesson content */}
+          {lesson.content && <MarkdownRenderer content={lesson.content} />}
+
+          {/* Previous / Next navigation */}
+          <div className="mt-10 flex items-center justify-between border-t border-border pt-6">
             {prevLesson ? (
               <Button asChild variant="outline" className="rounded-full">
                 <Link href={`/courses/${slug}/lessons/${prevLesson.slug}`}>
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
-                  {prevLesson.title}
+                  Vorige les
                 </Link>
               </Button>
             ) : (
               <Button asChild variant="ghost" className="text-muted-foreground">
                 <Link href="/">
                   <ChevronLeftIcon className="mr-2 h-4 w-4" />
-                  Terug naar curriculum
+                  Curriculum
                 </Link>
               </Button>
             )}
@@ -195,7 +236,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
             {nextLesson ? (
               <Button asChild className="rounded-full">
                 <Link href={`/courses/${slug}/lessons/${nextLesson.slug}`}>
-                  {nextLesson.title}
+                  Volgende les
                   <ChevronRightIcon className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
