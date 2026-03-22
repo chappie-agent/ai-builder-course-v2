@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 export const HeroCrossPattern = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const lerpRef = useRef({ x: -9999, y: -9999 });
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -19,9 +20,10 @@ export const HeroCrossPattern = () => {
     const OFFSET_Y = 4;
     const ARM = 3; // half-length of each cross arm in px
     const BASE_ALPHA = 0.06;
-    const HOVER_ALPHA = 0.3;
-    const HOVER_SCALE = 2.5;
+    const HOVER_ALPHA = 0.20;
+    const HOVER_SCALE = 2.0;
     const RADIUS = 90; // influence radius in px
+    const LERP = 0.10; // lag factor — lower = more delay
 
     let logicalW = 0;
     let logicalH = 0;
@@ -39,8 +41,12 @@ export const HeroCrossPattern = () => {
     const draw = () => {
       ctx.clearRect(0, 0, logicalW, logicalH);
 
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
+      // Interpolate towards real mouse position for a trailing effect
+      lerpRef.current.x += (mouseRef.current.x - lerpRef.current.x) * LERP;
+      lerpRef.current.y += (mouseRef.current.y - lerpRef.current.y) * LERP;
+
+      const mx = lerpRef.current.x;
+      const my = lerpRef.current.y;
       const startX = OFFSET_X % GRID;
       const startY = OFFSET_Y % GRID;
 
@@ -57,7 +63,7 @@ export const HeroCrossPattern = () => {
           ctx.save();
           ctx.translate(x, y);
           ctx.scale(scale, scale);
-          ctx.strokeStyle = `rgba(44, 35, 26, ${alpha})`;
+          ctx.strokeStyle = `rgba(139, 115, 85, ${alpha})`;
           ctx.lineWidth = 1.5;
           ctx.lineCap = "square";
           ctx.beginPath();
