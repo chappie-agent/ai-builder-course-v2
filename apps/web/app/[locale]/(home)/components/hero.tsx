@@ -29,8 +29,7 @@ const heroItems = [
 export const Hero = () => {
   return (
     <section className="relative w-full px-4 pt-8 pb-12 sm:px-6 md:pt-12 md:pb-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0] sm:rounded-[3rem]">
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0] sm:rounded-[3rem]">
           <HeroCrossPattern />
 
           <div className="relative px-6 pt-16 pb-10 sm:px-12 sm:pt-24 sm:pb-16 md:px-16 md:pt-32 md:pb-8 lg:px-24">
@@ -71,7 +70,7 @@ export const Hero = () => {
             </div>
 
             <div className="mt-12 sm:mt-16 md:mt-20">
-              <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#d4c8b5]/40 bg-gradient-to-b from-[#faf7f2] to-[#f0e9dd] shadow-lg sm:rounded-3xl">
+              <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-[#d4c8b5]/40 bg-gradient-to-b from-[#faf7f2] to-[#f0e9dd] shadow-lg sm:rounded-3xl">
                 <div className="grid grid-cols-2 gap-px bg-[#d4c8b5]/30 sm:grid-cols-5">
                   {heroItems.map((item, index) => (
                     <div
@@ -89,7 +88,6 @@ export const Hero = () => {
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };
