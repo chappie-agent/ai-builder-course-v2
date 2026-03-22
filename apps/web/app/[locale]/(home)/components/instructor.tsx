@@ -75,7 +75,7 @@ export const Instructor = () => {
               }}
             >
               <Image
-                src="/instructor.jpg"
+                src="/instructor.png"
                 alt="Elwyn de Neve — instructor"
                 fill
                 className="object-cover object-top"
