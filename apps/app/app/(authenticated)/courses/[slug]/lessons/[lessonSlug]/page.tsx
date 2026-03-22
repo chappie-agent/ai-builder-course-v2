@@ -9,8 +9,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
-import { Header } from "../../../../components/header";
 import { UserButton } from "@repo/auth/client";
+import { SidebarToggle } from "./sidebar-toggle";
 import {
   BookOpenIcon,
   CheckCircle2Icon,
@@ -129,11 +129,37 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       : 0;
 
   return (
-    <>
-      <Header page={lesson.title} pages={["Courses", course.title]} showSidebarTrigger={false} />
-      <div className="flex flex-1 flex-col gap-0 lg:flex-row">
+    <div className="flex h-screen flex-col">
+      {/* ─── Top bar: toggle + breadcrumbs + progress ─── */}
+      <header className="flex shrink-0 flex-col border-b border-[#e8dfd0] bg-[#faf7f2]">
+        <div className="flex items-center gap-2 px-4 py-2">
+          <SidebarToggle />
+          <nav className="flex items-center gap-1.5 text-sm">
+            <Link href={`/courses/${slug}`} className="text-[#8b7355] hover:text-[#2c231a] transition-colors">
+              Courses
+            </Link>
+            <span className="text-[#c4b5a0]">›</span>
+            <Link href={`/courses/${slug}`} className="text-[#8b7355] hover:text-[#2c231a] transition-colors">
+              {course.title}
+            </Link>
+            <span className="text-[#c4b5a0]">›</span>
+            <span className="font-medium text-[#2c231a] truncate max-w-[300px]">{lesson.title}</span>
+          </nav>
+        </div>
+        <div className="flex items-center gap-3 border-t border-[#e8dfd0]/50 px-4 py-1.5">
+          <span className="text-xs text-[#8b7355]">
+            {completedIds.size}/{allLessons.length} lessons
+          </span>
+          <Progress value={progressPercent} className="flex-1" />
+          <span className="text-xs tabular-nums text-[#8b7355]">
+            {progressPercent}%
+          </span>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden lg:flex-row">
         {/* ─── Left sidebar: Course Content ─── */}
-        <aside className="flex w-full shrink-0 flex-col border-b border-[#e8dfd0] bg-[#faf7f2] lg:h-[calc(100vh-48px)] lg:w-[300px] lg:border-b-0 lg:border-r">
+        <aside className="lesson-sidebar flex w-full shrink-0 flex-col border-b border-[#e8dfd0] bg-[#faf7f2] lg:w-[300px] lg:border-b-0 lg:border-r transition-all duration-200 [[data-sidebar-collapsed=true]_&]:lg:w-0 [[data-sidebar-collapsed=true]_&]:lg:overflow-hidden [[data-sidebar-collapsed=true]_&]:lg:border-r-0">
           {/* Sidebar header */}
           <div className="flex items-center justify-between border-b border-[#e8dfd0] px-5 py-4">
             <h2 className="font-semibold text-[#2c231a]">Course Content</h2>
@@ -239,19 +265,8 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         </aside>
 
         {/* ─── Main content (video + lesson info) ─── */}
-        <div className="flex flex-1 flex-col">
-          {/* Progress bar */}
-          <div className="flex items-center gap-3 border-b border-[#e8dfd0] bg-[#faf7f2] px-4 py-2">
-            <span className="text-xs text-[#8b7355]">
-              {completedIds.size}/{allLessons.length} lessons
-            </span>
-            <Progress value={progressPercent} className="flex-1" />
-            <span className="text-xs tabular-nums text-[#8b7355]">
-              {progressPercent}%
-            </span>
-          </div>
-
-          <div className="flex flex-1 flex-col gap-6 p-4">
+        <div className="flex flex-1 flex-col overflow-y-auto">
+          <div className="flex flex-1 flex-col gap-6 p-6">
             {/* Video Player */}
             <div className="w-full overflow-hidden rounded-2xl bg-[#2c231a]">
               {lesson.videoUrl ? (
@@ -414,7 +429,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         </div>
 
       </div>
-    </>
+    </div>
   );
 };
 
