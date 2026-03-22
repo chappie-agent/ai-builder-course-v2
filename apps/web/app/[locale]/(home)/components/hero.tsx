@@ -33,8 +33,8 @@ export const Hero = () => {
         <div
           className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0] sm:rounded-[3rem]"
           style={{
-            maskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
+            maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
           }}
         >
           <HeroCrossPattern />
