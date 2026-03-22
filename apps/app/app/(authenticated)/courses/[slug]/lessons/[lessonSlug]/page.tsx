@@ -12,8 +12,11 @@ import { markLessonComplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
 import {
   CheckCircle2Icon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CircleIcon,
+  PlayCircleIcon,
 } from "lucide-react";
 
 interface LessonPageProps {
@@ -68,7 +71,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                 include: {
                   lessons: {
                     orderBy: { order: "asc" },
-                    select: { id: true, title: true, slug: true, order: true },
+                    select: { id: true, title: true, slug: true, order: true, duration: true },
                   },
                 },
               },
@@ -88,10 +91,11 @@ const LessonPage = async ({ params }: LessonPageProps) => {
   }
 
   const isCompleted = lesson.progress.some((p) => p.completed);
+  const course = lesson.module.course;
 
   // Build flat ordered lesson list for prev/next navigation
-  const allLessons = lesson.module.course.modules.flatMap((m) =>
-    m.lessons.map((l) => ({ ...l, moduleId: m.id }))
+  const allLessons = course.modules.flatMap((m) =>
+    m.lessons.map((l) => ({ ...l, moduleId: m.id, moduleTitle: m.title }))
   );
   const currentIndex = allLessons.findIndex((l) => l.id === lesson.id);
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
@@ -115,130 +119,205 @@ const LessonPage = async ({ params }: LessonPageProps) => {
       ? Math.round((completedIds.size / allLessons.length) * 100)
       : 0;
 
-  const course = lesson.module.course;
-
   return (
     <>
       <Header page={lesson.title} pages={["Courses", course.title]} />
-      <div className="flex flex-1 flex-col gap-0">
-        {/* Progress bar */}
-        <div className="flex items-center gap-3 border-b border-[#e8dfd0] bg-[#faf7f2] px-4 py-2">
-          <span className="text-xs text-[#8b7355]">
-            {completedIds.size}/{allLessons.length} lessons
-          </span>
-          <Progress value={progressPercent} className="flex-1" />
-          <span className="text-xs tabular-nums text-[#8b7355]">
-            {progressPercent}%
-          </span>
-        </div>
-
-        <div className="flex flex-1 flex-col gap-6 p-4">
-          {/* Video Player */}
-          <div className="reveal-up w-full overflow-hidden rounded-2xl bg-[#2c231a]">
-            {lesson.videoUrl ? (
-              <iframe
-                src={lesson.videoUrl}
-                className="aspect-video w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={lesson.title}
-              />
-            ) : (
-              <div className="flex aspect-video items-center justify-center">
-                <p className="text-sm text-[#c4b5a0]">
-                  No video available for this lesson
-                </p>
-              </div>
-            )}
+      <div className="flex flex-1 flex-col gap-0 lg:flex-row">
+        {/* ─── Main content (video + lesson info) ─── */}
+        <div className="flex flex-1 flex-col">
+          {/* Progress bar */}
+          <div className="flex items-center gap-3 border-b border-[#e8dfd0] bg-[#faf7f2] px-4 py-2">
+            <span className="text-xs text-[#8b7355]">
+              {completedIds.size}/{allLessons.length} lessons
+            </span>
+            <Progress value={progressPercent} className="flex-1" />
+            <span className="text-xs tabular-nums text-[#8b7355]">
+              {progressPercent}%
+            </span>
           </div>
 
-          {/* Lesson header */}
-          <div className="reveal-up-delay flex items-start justify-between gap-4">
-            <div>
-              <div className="mb-1 flex items-center gap-2">
-                <span className="text-sm text-[#8b7355]">
-                  {lesson.module.title}
-                </span>
-                {lesson.duration && (
-                  <>
-                    <span className="text-[#c4b5a0]">·</span>
-                    <span className="text-sm text-muted-foreground">
-                      {Math.floor(lesson.duration / 60)}m
-                    </span>
-                  </>
-                )}
-              </div>
-              <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
+          <div className="flex flex-1 flex-col gap-6 p-4">
+            {/* Video Player */}
+            <div className="w-full overflow-hidden rounded-2xl bg-[#2c231a]">
+              {lesson.videoUrl ? (
+                <iframe
+                  src={lesson.videoUrl}
+                  className="aspect-video w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={lesson.title}
+                />
+              ) : (
+                <div className="flex aspect-video items-center justify-center">
+                  <p className="text-sm text-[#c4b5a0]">
+                    No video available for this lesson
+                  </p>
+                </div>
+              )}
             </div>
 
-            {isCompleted ? (
-              <Badge variant="secondary" className="shrink-0 border-[#e8dfd0]">
-                <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-600" />
-                Completed
-              </Badge>
-            ) : (
-              <form
-                action={async () => {
-                  "use server";
-                  await markLessonComplete(lesson.id, slug, lessonSlug);
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
+            {/* Lesson header */}
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="text-sm text-[#8b7355]">
+                    {lesson.module.title}
+                  </span>
+                  {lesson.duration && (
+                    <>
+                      <span className="text-[#c4b5a0]">·</span>
+                      <span className="text-sm text-muted-foreground">
+                        {Math.floor(lesson.duration / 60)}m
+                      </span>
+                    </>
+                  )}
+                </div>
+                <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
+              </div>
+
+              {isCompleted ? (
+                <Badge variant="secondary" className="shrink-0 border-[#e8dfd0]">
+                  <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-600" />
+                  Completed
+                </Badge>
+              ) : (
+                <form
+                  action={async () => {
+                    "use server";
+                    await markLessonComplete(lesson.id, slug, lessonSlug);
+                  }}
                 >
-                  <CheckCircle2Icon className="mr-2 h-4 w-4" />
-                  Mark as Complete
-                </Button>
-              </form>
-            )}
-          </div>
-
-          {/* Lesson Content */}
-          {lesson.content && (
-            <div className="reveal-up-delay-2 prose max-w-none dark:prose-invert">
-              <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                {lesson.content}
-              </div>
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
+                  >
+                    <CheckCircle2Icon className="mr-2 h-4 w-4" />
+                    Mark as Complete
+                  </Button>
+                </form>
+              )}
             </div>
-          )}
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between border-t border-[#e8dfd0] pt-4">
-            {prevLesson ? (
-              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
-                <Link href={`/courses/${slug}/lessons/${prevLesson.slug}`}>
-                  <ChevronLeftIcon className="mr-2 h-4 w-4" />
-                  {prevLesson.title}
-                </Link>
-              </Button>
-            ) : (
-              <Button asChild variant="ghost" className="text-[#8b7355] hover:text-[#2c231a]">
-                <Link href={`/courses/${slug}`}>
-                  <ChevronLeftIcon className="mr-2 h-4 w-4" />
-                  Back to Course
-                </Link>
-              </Button>
+            {/* Lesson Content */}
+            {lesson.content && (
+              <div className="prose max-w-none dark:prose-invert">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                  {lesson.content}
+                </div>
+              </div>
             )}
 
-            {nextLesson ? (
-              <Button asChild className="rounded-full bg-[#2c231a] text-[#f5f0e8] hover:bg-[#3d3127]">
-                <Link href={`/courses/${slug}/lessons/${nextLesson.slug}`}>
-                  {nextLesson.title}
-                  <ChevronRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            ) : (
-              <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
-                <Link href={`/courses/${slug}`}>
-                  Course Complete!
-                  <ChevronRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            )}
+            {/* Navigation */}
+            <div className="flex items-center justify-between border-t border-[#e8dfd0] pt-4">
+              {prevLesson ? (
+                <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
+                  <Link href={`/courses/${slug}/lessons/${prevLesson.slug}`}>
+                    <ChevronLeftIcon className="mr-2 h-4 w-4" />
+                    {prevLesson.title}
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild variant="ghost" className="text-[#8b7355] hover:text-[#2c231a]">
+                  <Link href={`/courses/${slug}`}>
+                    <ChevronLeftIcon className="mr-2 h-4 w-4" />
+                    Back to Course
+                  </Link>
+                </Button>
+              )}
+
+              {nextLesson ? (
+                <Button asChild className="rounded-full bg-[#2c231a] text-[#f5f0e8] hover:bg-[#3d3127]">
+                  <Link href={`/courses/${slug}/lessons/${nextLesson.slug}`}>
+                    {nextLesson.title}
+                    <ChevronRightIcon className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild variant="outline" className="border-[#e8dfd0] hover:bg-[#f0e9dd]">
+                  <Link href={`/courses/${slug}`}>
+                    Course Complete!
+                    <ChevronRightIcon className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* ─── Right sidebar: Course Content ─── */}
+        <aside className="w-full shrink-0 border-t border-[#e8dfd0] bg-[#faf7f2] lg:w-[340px] lg:border-t-0 lg:border-l">
+          {/* Sidebar header */}
+          <div className="flex items-center justify-between border-b border-[#e8dfd0] px-5 py-4">
+            <h2 className="font-semibold text-[#2c231a]">Course Content</h2>
+            <span className="text-xs text-[#8b7355]">
+              {completedIds.size}/{allLessons.length}
+            </span>
+          </div>
+
+          {/* Module list */}
+          <div className="divide-y divide-[#e8dfd0]">
+            {course.modules.map((mod) => {
+              const modLessons = allLessons.filter((l) => l.moduleId === mod.id);
+              const modCompleted = modLessons.filter((l) => completedIds.has(l.id)).length;
+              const modTotal = modLessons.length;
+              const modDuration = mod.lessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
+
+              return (
+                <details
+                  key={mod.id}
+                  open={mod.id === lesson.module.id}
+                  className="group"
+                >
+                  <summary className="flex cursor-pointer items-center gap-3 px-5 py-3.5 text-sm hover:bg-[#f0e9dd] [&::-webkit-details-marker]:hidden">
+                    <ChevronDownIcon className="h-4 w-4 shrink-0 text-[#8b7355] transition-transform group-open:rotate-0 -rotate-90" />
+                    <div className="flex-1 text-left">
+                      <p className="font-medium text-[#2c231a]">{mod.title}</p>
+                      <p className="text-xs text-[#8b7355]">
+                        {modCompleted}/{modTotal}
+                        {modDuration > 0 && <> · {Math.round(modDuration / 60)} min</>}
+                      </p>
+                    </div>
+                  </summary>
+                  <ul className="border-t border-[#e8dfd0]/50 bg-white/50">
+                    {modLessons.map((l) => {
+                      const isCurrent = l.id === lesson.id;
+                      const isDone = completedIds.has(l.id);
+                      return (
+                        <li key={l.id}>
+                          <Link
+                            href={`/courses/${slug}/lessons/${l.slug}`}
+                            className={`flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
+                              isCurrent
+                                ? "border-l-2 border-[#8b7355] bg-[#f0e9dd] font-medium text-[#2c231a]"
+                                : "hover:bg-[#f5f0e8]"
+                            }`}
+                          >
+                            {isDone ? (
+                              <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
+                            ) : isCurrent ? (
+                              <PlayCircleIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                            ) : (
+                              <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
+                            )}
+                            <span className={isDone && !isCurrent ? "text-[#8b7355]" : ""}>
+                              {l.title}
+                            </span>
+                            {l.duration && (
+                              <span className="ml-auto text-xs tabular-nums text-[#8b7355]/60">
+                                {Math.floor(l.duration / 60)}m
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </details>
+              );
+            })}
+          </div>
+        </aside>
       </div>
     </>
   );
