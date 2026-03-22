@@ -6,6 +6,7 @@ import { CTA } from "./components/cta";
 import { Curriculum } from "./components/curriculum";
 import { FAQ } from "./components/faq";
 import { Hero } from "./components/hero";
+import { Instructor } from "./components/instructor";
 import { Modules } from "./components/modules";
 import { NavBar } from "./components/nav-bar";
 import { SiteFooter } from "./components/site-footer";
@@ -37,6 +38,7 @@ const Home = async ({ params }: HomeProps) => {
         <Audience />
         <Modules />
         <Curriculum />
+        <Instructor />
         <SocialProof />
         <FAQ />
         <CTA />
