@@ -3,12 +3,11 @@ export const dynamic = "force-dynamic";
 import { auth } from "@repo/auth/server";
 import { database } from "@repo/database";
 import type { Slide } from "@repo/database";
-import { Badge } from "@repo/design-system/components/ui/badge";
 import { Button } from "@repo/design-system/components/ui/button";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { markLessonComplete } from "@/app/actions/course";
+import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
 import { MarkdownRenderer } from "./components/markdown-renderer";
 import { PresentationButton } from "./components/presentation-modal";
@@ -139,10 +138,17 @@ const LessonPage = async ({ params }: LessonPageProps) => {
             </div>
 
             {isCompleted ? (
-              <Badge variant="secondary" className="shrink-0">
-                <CheckCircle2Icon className="mr-1 h-3 w-3" />
-                Voltooid
-              </Badge>
+              <form
+                action={async () => {
+                  "use server";
+                  await markLessonIncomplete(lesson.id, slug, lessonSlug);
+                }}
+              >
+                <Button type="submit" variant="secondary" className="shrink-0 rounded-full">
+                  <CheckCircle2Icon className="mr-2 h-4 w-4 text-green-600" />
+                  Voltooid
+                </Button>
+              </form>
             ) : (
               <form
                 action={async () => {

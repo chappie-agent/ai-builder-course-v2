@@ -45,6 +45,22 @@ export async function markLessonComplete(lessonId: string, courseSlug: string, l
   revalidatePath("/");
 }
 
+export async function markLessonIncomplete(lessonId: string, courseSlug: string, lessonSlug: string) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Not authenticated");
+  }
+
+  await database.lessonProgress.update({
+    where: { userId_lessonId: { userId, lessonId } },
+    data: { completed: false, completedAt: null },
+  });
+
+  revalidatePath(`/courses/${courseSlug}/lessons/${lessonSlug}`);
+  revalidatePath("/");
+}
+
 export async function getCourseProgress(courseId: string): Promise<number> {
   const { userId } = await auth();
 
