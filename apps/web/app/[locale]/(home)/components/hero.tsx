@@ -35,8 +35,8 @@ export const Hero = () => {
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0]"
             style={{
-              maskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
+              maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
             }}
           />
           <HeroCrossPattern />
