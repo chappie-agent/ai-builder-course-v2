@@ -30,13 +30,15 @@ export const Hero = () => {
   return (
     <section className="relative w-full px-4 pt-8 pb-12 sm:px-6 md:pt-12 md:pb-20">
       <div className="mx-auto max-w-7xl">
-        <div
-          className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0] sm:rounded-[3rem]"
-          style={{
-            maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-          }}
-        >
+        <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[3rem]">
+          {/* Background layer — fades out at bottom, content stays fully visible */}
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#f5f0e8] via-[#ede6da] to-[#e8dfd0]"
+            style={{
+              maskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 55%, transparent 90%)",
+            }}
+          />
           <HeroCrossPattern />
 
           <div className="relative px-6 pt-16 pb-10 sm:px-12 sm:pt-24 sm:pb-16 md:px-16 md:pt-32 md:pb-8 lg:px-24">
