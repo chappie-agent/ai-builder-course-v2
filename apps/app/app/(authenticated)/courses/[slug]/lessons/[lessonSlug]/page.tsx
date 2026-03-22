@@ -8,7 +8,7 @@ import { Progress } from "@repo/design-system/components/ui/progress";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { markLessonComplete } from "@/app/actions/course";
+import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
 import { Header } from "../../../../components/header";
 import {
   BookOpenIcon,
@@ -182,10 +182,21 @@ const LessonPage = async ({ params }: LessonPageProps) => {
               </div>
 
               {isCompleted ? (
-                <Badge variant="secondary" className="shrink-0 border-[#e8dfd0]">
-                  <CheckCircle2Icon className="mr-1 h-3 w-3 text-green-600" />
-                  Completed
-                </Badge>
+                <form
+                  action={async () => {
+                    "use server";
+                    await markLessonIncomplete(lesson.id, slug, lessonSlug);
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
+                  >
+                    <CheckCircle2Icon className="mr-2 h-4 w-4 text-green-600" />
+                    Voltooid
+                  </Button>
+                </form>
               ) : (
                 <form
                   action={async () => {
@@ -199,7 +210,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
                     className="shrink-0 border-[#e8dfd0] hover:bg-[#f0e9dd]"
                   >
                     <CheckCircle2Icon className="mr-2 h-4 w-4" />
-                    Mark as Complete
+                    Markeer als voltooid
                   </Button>
                 </form>
               )}

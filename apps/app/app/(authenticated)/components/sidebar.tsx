@@ -84,6 +84,13 @@ export const GlobalSidebar = ({ children, course }: GlobalSidebarProperties) => 
   const lessonSlugMatch = pathname.match(/\/lessons\/([^/]+)/);
   const currentLessonSlug = lessonSlugMatch?.[1] ?? null;
 
+  // On lesson pages, hide the left sidebar — the lesson page has its own right sidebar
+  const isLessonPage = pathname.includes("/lessons/");
+
+  if (isLessonPage) {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <Sidebar variant="inset">
