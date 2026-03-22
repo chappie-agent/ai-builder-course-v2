@@ -129,6 +129,80 @@ const LessonPage = async ({ params }: LessonPageProps) => {
     <>
       <Header page={lesson.title} pages={["Courses", course.title]} />
       <div className="flex flex-1 flex-col gap-0 lg:flex-row">
+        {/* ─── Left sidebar: Course Content ─── */}
+        <aside className="w-full shrink-0 border-b border-[#e8dfd0] bg-[#faf7f2] lg:w-[300px] lg:border-b-0 lg:border-r">
+          {/* Sidebar header */}
+          <div className="flex items-center justify-between border-b border-[#e8dfd0] px-5 py-4">
+            <h2 className="font-semibold text-[#2c231a]">Course Content</h2>
+            <span className="text-xs text-[#8b7355]">
+              {completedIds.size}/{allLessons.length}
+            </span>
+          </div>
+
+          {/* Module list */}
+          <div className="divide-y divide-[#e8dfd0] overflow-y-auto lg:max-h-[calc(100vh-64px)]">
+            {course.modules.map((mod) => {
+              const modLessons = allLessons.filter((l) => l.moduleId === mod.id);
+              const modCompleted = modLessons.filter((l) => completedIds.has(l.id)).length;
+              const modTotal = modLessons.length;
+              const modDuration = mod.lessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
+
+              return (
+                <details
+                  key={mod.id}
+                  open={mod.id === lesson.module.id}
+                  className="group"
+                >
+                  <summary className="flex cursor-pointer items-center gap-3 px-5 py-3.5 text-sm hover:bg-[#f0e9dd] [&::-webkit-details-marker]:hidden">
+                    <ChevronDownIcon className="h-4 w-4 shrink-0 text-[#8b7355] transition-transform group-open:rotate-0 -rotate-90" />
+                    <div className="flex-1 text-left">
+                      <p className="font-medium text-[#2c231a]">{mod.title}</p>
+                      <p className="text-xs text-[#8b7355]">
+                        {modCompleted}/{modTotal}
+                        {modDuration > 0 && <> · {Math.round(modDuration / 60)} min</>}
+                      </p>
+                    </div>
+                  </summary>
+                  <ul className="border-t border-[#e8dfd0]/50 bg-white/50">
+                    {modLessons.map((l) => {
+                      const isCurrent = l.id === lesson.id;
+                      const isDone = completedIds.has(l.id);
+                      return (
+                        <li key={l.id}>
+                          <Link
+                            href={`/courses/${slug}/lessons/${l.slug}`}
+                            className={`flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
+                              isCurrent
+                                ? "border-l-2 border-[#8b7355] bg-[#f0e9dd] font-medium text-[#2c231a]"
+                                : "hover:bg-[#f5f0e8]"
+                            }`}
+                          >
+                            {isDone ? (
+                              <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
+                            ) : isCurrent ? (
+                              <PlayCircleIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                            ) : (
+                              <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
+                            )}
+                            <span className={isDone && !isCurrent ? "text-[#8b7355]" : ""}>
+                              {l.title}
+                            </span>
+                            {l.duration && (
+                              <span className="ml-auto text-xs tabular-nums text-[#8b7355]/60">
+                                {Math.floor(l.duration / 60)}m
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </details>
+              );
+            })}
+          </div>
+        </aside>
+
         {/* ─── Main content (video + lesson info) ─── */}
         <div className="flex flex-1 flex-col">
           {/* Progress bar */}
@@ -304,79 +378,6 @@ const LessonPage = async ({ params }: LessonPageProps) => {
           </div>
         </div>
 
-        {/* ─── Right sidebar: Course Content ─── */}
-        <aside className="w-full shrink-0 border-t border-[#e8dfd0] bg-[#faf7f2] lg:w-[340px] lg:border-t-0 lg:border-l">
-          {/* Sidebar header */}
-          <div className="flex items-center justify-between border-b border-[#e8dfd0] px-5 py-4">
-            <h2 className="font-semibold text-[#2c231a]">Course Content</h2>
-            <span className="text-xs text-[#8b7355]">
-              {completedIds.size}/{allLessons.length}
-            </span>
-          </div>
-
-          {/* Module list */}
-          <div className="divide-y divide-[#e8dfd0]">
-            {course.modules.map((mod) => {
-              const modLessons = allLessons.filter((l) => l.moduleId === mod.id);
-              const modCompleted = modLessons.filter((l) => completedIds.has(l.id)).length;
-              const modTotal = modLessons.length;
-              const modDuration = mod.lessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
-
-              return (
-                <details
-                  key={mod.id}
-                  open={mod.id === lesson.module.id}
-                  className="group"
-                >
-                  <summary className="flex cursor-pointer items-center gap-3 px-5 py-3.5 text-sm hover:bg-[#f0e9dd] [&::-webkit-details-marker]:hidden">
-                    <ChevronDownIcon className="h-4 w-4 shrink-0 text-[#8b7355] transition-transform group-open:rotate-0 -rotate-90" />
-                    <div className="flex-1 text-left">
-                      <p className="font-medium text-[#2c231a]">{mod.title}</p>
-                      <p className="text-xs text-[#8b7355]">
-                        {modCompleted}/{modTotal}
-                        {modDuration > 0 && <> · {Math.round(modDuration / 60)} min</>}
-                      </p>
-                    </div>
-                  </summary>
-                  <ul className="border-t border-[#e8dfd0]/50 bg-white/50">
-                    {modLessons.map((l) => {
-                      const isCurrent = l.id === lesson.id;
-                      const isDone = completedIds.has(l.id);
-                      return (
-                        <li key={l.id}>
-                          <Link
-                            href={`/courses/${slug}/lessons/${l.slug}`}
-                            className={`flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
-                              isCurrent
-                                ? "border-l-2 border-[#8b7355] bg-[#f0e9dd] font-medium text-[#2c231a]"
-                                : "hover:bg-[#f5f0e8]"
-                            }`}
-                          >
-                            {isDone ? (
-                              <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
-                            ) : isCurrent ? (
-                              <PlayCircleIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                            ) : (
-                              <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
-                            )}
-                            <span className={isDone && !isCurrent ? "text-[#8b7355]" : ""}>
-                              {l.title}
-                            </span>
-                            {l.duration && (
-                              <span className="ml-auto text-xs tabular-nums text-[#8b7355]/60">
-                                {Math.floor(l.duration / 60)}m
-                              </span>
-                            )}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </details>
-              );
-            })}
-          </div>
-        </aside>
       </div>
     </>
   );
