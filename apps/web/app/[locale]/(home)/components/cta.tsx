@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle, Users, Video } from "lucide-react";
 import Link from "next/link";
 
 export const CTA = () => {
@@ -23,6 +23,23 @@ export const CTA = () => {
               Join the next cohort and learn how to design, build, automate,
               and launch with AI in a practical, hands-on way.
             </p>
+
+            {/* Community signals */}
+            <div className="mx-auto mt-8 flex max-w-lg flex-wrap items-center justify-center gap-5 text-sm text-[#6b5c4c]/70">
+              <span className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-[#8b7355]" />
+                Private community
+              </span>
+              <span className="flex items-center gap-2">
+                <Video className="h-4 w-4 text-[#8b7355]" />
+                Live cohort sessions
+              </span>
+              <span className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-[#8b7355]" />
+                Direct instructor access
+              </span>
+            </div>
+
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
               <Link
                 href="/enroll"
@@ -39,7 +56,7 @@ export const CTA = () => {
               </Link>
             </div>
             <p className="mt-6 text-xs text-[#8b7355]/60">
-              No commitment required · start with a free intro session
+              Limited seats per cohort · next cohort starts soon
             </p>
           </div>
         </div>
