@@ -11,6 +11,7 @@ import { notFound, redirect } from "next/navigation";
 import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
 import { UserButton } from "@repo/auth/client";
 import { SidebarToggle } from "./sidebar-toggle";
+import { MarkdownRenderer } from "./markdown-renderer";
 import {
   BookOpenIcon,
   CheckCircle2Icon,
@@ -341,11 +342,7 @@ const LessonPage = async ({ params }: LessonPageProps) => {
 
             {/* Lesson Content */}
             {lesson.content && (
-              <div className="prose max-w-none dark:prose-invert">
-                <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                  {lesson.content}
-                </div>
-              </div>
+              <MarkdownRenderer content={lesson.content} />
             )}
 
             {/* Course Summary */}

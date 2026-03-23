@@ -22,6 +22,7 @@ import {
   ChevronDownIcon,
   CircleIcon,
   HelpCircleIcon,
+  LockIcon,
   PlayCircleIcon,
   SettingsIcon,
 } from "lucide-react";
@@ -96,6 +97,9 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
     totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
   const firstLesson = course.modules[0]?.lessons[0];
+  // Find first incomplete lesson for "Continue Learning" button
+  const nextIncompleteLesson = allLessons.find((l) => !completedLessonIds.has(l.id));
+  const continueLesson = nextIncompleteLesson ?? firstLesson;
 
   return (
     <div className="flex h-screen overflow-hidden lg:flex-row">
@@ -248,7 +252,7 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
                     asChild
                     className="rounded-full bg-[#f5f0e8] text-[#2c231a] hover:bg-white"
                   >
-                    <Link href={firstLesson ? `/courses/${slug}/lessons/${firstLesson.slug}` : "#"}>
+                    <Link href={continueLesson ? `/courses/${slug}/lessons/${continueLesson.slug}` : "#"}>
                       <PlayCircleIcon className="mr-2 h-4 w-4" />
                       {completedCount > 0 ? "Continue Learning" : "Start Course"}
                     </Link>
@@ -283,57 +287,79 @@ const CourseDetailPage = async ({ params }: CourseDetailPageProps) => {
           <div>
             <h2 className="mb-4 text-xl font-semibold tracking-tight">Curriculum</h2>
             <div className="space-y-3">
-              {course.modules.map((module) => (
-                <Card key={module.id} className="border-[#e8dfd0]">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base">{module.title}</CardTitle>
-                    {module.description && (
-                      <p className="text-sm text-muted-foreground">
-                        {module.description}
-                      </p>
-                    )}
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <ul className="space-y-1">
-                      {module.lessons.map((lesson) => {
-                        const isDone = completedLessonIds.has(lesson.id);
-                        return (
-                          <li key={lesson.id}>
-                            {isEnrolled ? (
-                              <Link
-                                href={`/courses/${slug}/lessons/${lesson.slug}`}
-                                className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm transition-all duration-200 hover:bg-[#f0e9dd]"
-                              >
-                                {isDone ? (
-                                  <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
-                                ) : (
-                                  <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
-                                )}
-                                <span>{lesson.title}</span>
-                                {lesson.duration && (
-                                  <span className="ml-auto tabular-nums text-muted-foreground">
-                                    {Math.floor(lesson.duration / 60)}m
-                                  </span>
-                                )}
-                              </Link>
-                            ) : (
-                              <div className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm">
-                                <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
-                                <span className="text-muted-foreground">{lesson.title}</span>
-                                {lesson.duration && (
-                                  <span className="ml-auto tabular-nums text-muted-foreground">
-                                    {Math.floor(lesson.duration / 60)}m
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
+              {course.modules.map((module) => {
+                // Module 1 (order=1) is always accessible for FREE tier
+                // Module 2+ requires MINI or FULL tier
+                const isModuleFree = module.order === 1;
+                const isModuleLocked = !isEnrolled || (!isModuleFree && course.tier === "FREE");
+                // For now, enrolled users get all modules (tier enforcement is visual preview)
+                const canAccess = isEnrolled;
+
+                return (
+                  <Card
+                    key={module.id}
+                    className={`border-[#e8dfd0] ${isModuleLocked && !isEnrolled ? "opacity-75" : ""}`}
+                  >
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center gap-2">
+                        <CardTitle className="text-base">{module.title}</CardTitle>
+                        {!isModuleFree && (
+                          <Badge variant="outline" className="text-[10px] border-[#e8dfd0] text-[#8b7355]">
+                            Premium
+                          </Badge>
+                        )}
+                        {!canAccess && (
+                          <LockIcon className="h-3.5 w-3.5 text-[#c4b5a0]" />
+                        )}
+                      </div>
+                      {module.description && (
+                        <p className="text-sm text-muted-foreground">
+                          {module.description}
+                        </p>
+                      )}
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <ul className="space-y-1">
+                        {module.lessons.map((lesson) => {
+                          const isDone = completedLessonIds.has(lesson.id);
+                          return (
+                            <li key={lesson.id}>
+                              {canAccess ? (
+                                <Link
+                                  href={`/courses/${slug}/lessons/${lesson.slug}`}
+                                  className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm transition-all duration-200 hover:bg-[#f0e9dd]"
+                                >
+                                  {isDone ? (
+                                    <CheckCircle2Icon className="h-4 w-4 shrink-0 text-green-600" />
+                                  ) : (
+                                    <CircleIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
+                                  )}
+                                  <span>{lesson.title}</span>
+                                  {lesson.duration && (
+                                    <span className="ml-auto tabular-nums text-muted-foreground">
+                                      {Math.floor(lesson.duration / 60)}m
+                                    </span>
+                                  )}
+                                </Link>
+                              ) : (
+                                <div className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm opacity-60">
+                                  <LockIcon className="h-4 w-4 shrink-0 text-[#c4b5a0]" />
+                                  <span className="text-muted-foreground">{lesson.title}</span>
+                                  {lesson.duration && (
+                                    <span className="ml-auto tabular-nums text-muted-foreground">
+                                      {Math.floor(lesson.duration / 60)}m
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>
