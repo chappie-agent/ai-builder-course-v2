@@ -1,18 +1,29 @@
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Bot,
+  Code2,
+  Film,
+  Image as ImageIcon,
+  Layers,
+  Rocket,
+  Sparkles,
+  TerminalSquare,
+  Workflow,
+} from "lucide-react";
 import Link from "next/link";
 import { HeroCrossPattern } from "./hero-cross-pattern";
 
-const tools = [
-  "Claude",
-  "Cursor",
-  "v0",
-  "OpenClaw",
-  "Vercel",
-  "Next.js",
-  "Midjourney",
-  "Runway",
-  "Make",
-  "n8n",
+const heroItems = [
+  { label: "Agents", icon: Bot },
+  { label: "Workflows", icon: Workflow },
+  { label: "AI Dev", icon: Code2 },
+  { label: "Image Gen", icon: ImageIcon },
+  { label: "Video Gen", icon: Film },
+  { label: "OpenClaw", icon: Layers },
+  { label: "Automations", icon: Sparkles },
+  { label: "Ship Fast", icon: Rocket },
+  { label: "Prompting", icon: TerminalSquare },
+  { label: "Launch", icon: ArrowRight },
 ];
 
 export const Hero = () => {
@@ -67,20 +78,21 @@ export const Hero = () => {
               </Link>
             </div>
 
-            {/* Tools strip */}
             <div className="mt-12 sm:mt-16 md:mt-20">
-              <p className="mb-4 text-center text-xs font-medium uppercase tracking-widest text-[#8b7355]/60">
-                Tools you'll work with
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-8">
-                {tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="text-sm font-medium text-[#8b7355]/70 sm:text-base"
-                  >
-                    {tool}
-                  </span>
-                ))}
+              <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#d4c8b5]/40 bg-gradient-to-b from-[#faf7f2] to-[#f0e9dd] shadow-lg sm:rounded-3xl">
+                <div className="grid grid-cols-2 gap-px bg-[#d4c8b5]/30 sm:grid-cols-5">
+                  {heroItems.map((item, index) => (
+                    <div
+                      key={item.label}
+                      className={`flex aspect-[1.1/1] flex-col items-center justify-center gap-3 p-4 text-center ${index % 2 === 0 ? "bg-[#faf7f2]" : "bg-[#f5f0e8]"}`}
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#bda98f]/40 bg-[linear-gradient(135deg,#ffffff,#e9dccd)] shadow-sm">
+                        <item.icon className="h-4.5 w-4.5 text-[#7b6651]" strokeWidth={1.75} />
+                      </div>
+                      <span className="text-xs text-[#8b7355] sm:text-sm">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

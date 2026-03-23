@@ -24,10 +24,31 @@ const testimonials = [
   },
 ];
 
+const stats = [
+  { value: "2,400+", label: "Students enrolled" },
+  { value: "94%", label: "Completion rate" },
+  { value: "4.9", label: "Average rating" },
+  { value: "10", label: "Weeks to production" },
+];
+
 export const SocialProof = () => {
   return (
     <section className="w-full px-4 py-16 sm:px-6 md:py-24">
       <div className="mx-auto max-w-7xl">
+        {/* Stats bar */}
+        <div className="mb-16 grid grid-cols-2 gap-6 rounded-2xl border border-[#e8dfd0]/60 bg-[#faf7f2] p-6 sm:grid-cols-4 sm:rounded-3xl sm:p-8 md:mb-20">
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="font-medium text-2xl tracking-tight text-[#2c231a] sm:text-3xl md:text-4xl">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-xs text-[#8b7355] sm:text-sm">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
         {/* Section header */}
         <div className="mb-12 text-center">
           <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[#8b7355]">
