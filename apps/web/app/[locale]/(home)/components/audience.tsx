@@ -40,7 +40,7 @@ export const Audience = () => {
             {audience.map((item) => (
               <div
                 key={item.title}
-                className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-[1.5rem] border border-[#e8dfd0]/60 transition-all duration-300 hover:-translate-y-1 hover:border-[#cfb89e]/70 hover:shadow-[0_20px_40px_rgba(112,83,55,0.08)]"
+                className="group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-[1.5rem] border border-[#e8dfd0]/60 transition-all duration-300 hover:border-[#cfb89e]/70 hover:shadow-[0_20px_40px_rgba(112,83,55,0.08)]"
               >
                 {/* Background image */}
                 <div
@@ -48,12 +48,16 @@ export const Audience = () => {
                   style={{ backgroundImage: `url(${item.image})` }}
                 />
 
-                {/* Text overlay with gradient for readability */}
-                <div className="relative z-10 bg-gradient-to-t from-[#2c231a]/90 via-[#2c231a]/60 to-transparent p-5 pt-16">
+                {/* Title at top */}
+                <div className="relative z-10 bg-gradient-to-b from-[#2c231a]/80 via-[#2c231a]/40 to-transparent p-5 pb-10">
                   <h3 className="text-lg font-medium text-[#f5f0e8]">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#f5f0e8]/75">
+                </div>
+
+                {/* Description at bottom */}
+                <div className="relative z-10 bg-gradient-to-t from-[#2c231a]/85 via-[#2c231a]/50 to-transparent p-5 pt-10">
+                  <p className="text-sm leading-relaxed text-[#f5f0e8]/80">
                     {item.description}
                   </p>
                 </div>
