@@ -128,9 +128,9 @@ async function main() {
 
   const course = await prisma.course.upsert({
     where: { slug: 'ai-builder-course' },
-    update: {},
+    update: { title: 'AI Development' },
     create: {
-      title: 'AI Builder Course',
+      title: 'AI Development',
       slug: 'ai-builder-course',
       description:
         'Learn to build, ship, and monetise AI-powered applications from scratch. ' +

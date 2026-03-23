@@ -14,7 +14,6 @@ import {
   ClockIcon,
   ImageIcon,
   LayersIcon,
-  PlayCircleIcon,
   SparklesIcon,
   VideoIcon,
   WrenchIcon,
@@ -151,12 +150,8 @@ const CoursesPage = async () => {
                     </Badge>
                   </div>
 
-                  {/* Play overlay on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/20">
-                    <div className="scale-0 rounded-full bg-white/90 p-2 shadow-lg transition-transform duration-200 group-hover:scale-100">
-                      <PlayCircleIcon className="h-6 w-6 text-[#2c231a]" />
-                    </div>
-                  </div>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/0 transition-all duration-200 group-hover:bg-black/10" />
 
                   {/* Progress bar at bottom of thumbnail */}
                   {isEnrolled && progressPercent > 0 && (
@@ -198,7 +193,7 @@ const CoursesPage = async () => {
                     )}
                   </div>
 
-                  {/* Progress */}
+                  {/* Status */}
                   <div className="mt-auto pt-2">
                     {isEnrolled ? (
                       <div className="flex items-center gap-2">
@@ -207,7 +202,7 @@ const CoursesPage = async () => {
                             <CheckCircle2Icon className="h-3 w-3" />
                             Voltooid
                           </div>
-                        ) : (
+                        ) : progressPercent > 0 ? (
                           <>
                             <Progress
                               value={progressPercent}
@@ -217,11 +212,15 @@ const CoursesPage = async () => {
                               {progressPercent}%
                             </span>
                           </>
+                        ) : (
+                          <span className="text-[10px] font-medium text-[#8b7355]">
+                            Start cursus →
+                          </span>
                         )}
                       </div>
                     ) : (
-                      <span className="text-[10px] font-medium text-[#8b7355]">
-                        Start cursus →
+                      <span className="text-[10px] font-medium text-[#c4956a]">
+                        Bekijk cursus →
                       </span>
                     )}
                   </div>

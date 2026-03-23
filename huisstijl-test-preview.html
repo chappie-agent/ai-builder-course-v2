@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Builder Course - Premium AI Course for Builders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Tokens - Light Mode */
+            --bg-background: #faf7f2;
+            --text-foreground: #2c231a;
+            --bg-primary: #2c231a;
+            --text-primary-foreground: #f5f0e8;
+            --bg-secondary: #f0e9dd;
+            --text-muted-foreground: #6b5c4c;
+            --bg-accent: #ede6da;
+            --color-ring: #8b7355;
+            --border-color: #e8dfd0;
+
+            /* Typography */
+            --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Monaco', 'Courier New', monospace;
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 10px;
+            --radius-xl: 14px;
+
+            /* Animation */
+            --animation-duration: 700ms;
+            --animation-easing: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-background);
+            color: var(--text-foreground);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Animations */
+        @keyframes reveal-up {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Header / Logo */
+        header {
+            padding: 2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-foreground);
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+        }
+
+        .logo-badge {
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary-foreground);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-foreground);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 200ms ease;
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+            animation-fill-mode: both;
+        }
+
+        nav a:nth-child(1) { animation-delay: 120ms; }
+        nav a:nth-child(2) { animation-delay: 220ms; }
+        nav a:nth-child(3) { animation-delay: 320ms; }
+
+        nav a:hover {
+            color: var(--color-ring);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #d6c4b4 0%, #f5f0e8 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(139, 115, 85, 0.05);
+            border-radius: 50%;
+            transform: translate(150px, -150px);
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-foreground);
+            letter-spacing: -0.02em;
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted-foreground);
+            margin-bottom: 3rem;
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+            animation-delay: 120ms;
+            animation-fill-mode: both;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+            animation-delay: 220ms;
+            animation-fill-mode: both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            padding: 1rem 2.5rem;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-family: var(--font-sans);
+        }
+
+        .btn-primary {
+            background-color: var(--bg-primary);
+            color: var(--text-primary-foreground);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--text-foreground);
+            box-shadow: 0 10px 30px rgba(44, 35, 26, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-foreground);
+            border-color: var(--text-foreground);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--bg-primary);
+            color: var(--text-foreground);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            background-color: var(--bg-background);
+        }
+
+        .features-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--text-foreground);
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: #fdfaf6;
+            padding: 2.5rem;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+            transition: all 300ms ease;
+            animation: reveal-up var(--animation-duration) var(--animation-easing);
+            animation-fill-mode: both;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0ms; }
+        .feature-card:nth-child(2) { animation-delay: 120ms; }
+        .feature-card:nth-child(3) { animation-delay: 220ms; }
+
+        .feature-card:hover {
+            border-color: var(--color-ring);
+            box-shadow: 0 10px 25px rgba(44, 35, 26, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-foreground);
+        }
+
+        .feature-card p {
+            color: var(--text-muted-foreground);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-muted-foreground);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--text-foreground);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+
+        footer a:hover {
+            color: var(--color-ring);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">
+            <div class="logo-badge">AI</div>
+            <span>AI Builder Course</span>
+        </a>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ship Real Products with Modern AI Tools</h1>
+            <p>A premium AI course for builders who want to master modern AI workflows, tools, and best practices. Learn from experts building with AI today.</p>
+            <div class="cta-group">
+                <a href="#" class="btn btn-primary">Start Learning Today</a>
+                <a href="#" class="btn btn-secondary">Watch Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2>What You'll Learn</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>Modern AI Tools</h3>
+                    <p>Master the latest AI tools and frameworks. Learn hands-on with cutting-edge technologies that builders use today.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Ship Real Products</h3>
+                    <p>Build and deploy real AI applications. From ideation to production with practical, proven workflows and patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Expert Guidance</h3>
+                    <p>Learn from experienced builders. Get insights into production-grade AI development and best practices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 AI Builder Course. Premium education for builders. <a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+    </footer>
+</body>
+</html>

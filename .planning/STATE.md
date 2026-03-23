@@ -1,51 +1,52 @@
 # Project State
 
+## Project Reference
+
+See: .planning/PROJECT.md (updated 2026-03-22)
+
+**Core value:** Students can access enrolled courses, watch video lessons in sequence, and clearly see their progress
+**Current focus:** Phase 5 — Database migration + production deploy
+
 ## Current Status
 
-**Phases 1–4 — Complete**
+**Milestone 1 — Course Platform MVP**
+Progress: ████████░░ 70% (Phases 1-4 complete, Phase 5 pending)
 
-### Phase 1: Course Data Model ✅
+| Phase | Name | Status | Plans |
+|-------|------|--------|-------|
+| 1 | Data Model + Schema | ✓ | Complete |
+| 2 | Seed Data | ✓ | Complete (script written) |
+| 3 | Course Catalog + Detail | ✓ | Complete |
+| 4 | Lesson Viewer + Progress + Dashboard | ✓ | Complete |
+| 5 | Database + Deploy | ○ | Not started |
+| 6 | Stripe Payment Gate | ○ | Not started |
 
-- [x] Add `CourseTier` and `EnrollmentStatus` enums to Prisma schema
-- [x] Add `Course`, `Module`, `Lesson`, `Enrollment`, `LessonProgress` models
-- [x] Create seed script (`packages/database/prisma/seed.ts`)
-- [ ] Run `prisma migrate dev` against a live database (environment required)
-- [ ] Run `prisma db seed` to populate sample data
+## What's Built (Phases 1-4)
 
-### Phases 2–4: Course Platform UI ✅
+- **Prisma schema**: Course, Module, Lesson, Enrollment, LessonProgress, CourseTier enum
+- **Seed script**: `packages/database/prisma/seed.ts`
+- **Server actions**: `apps/app/app/actions/course.ts` — enrollInCourse, markLessonComplete, getCourseProgress
+- **Course catalog**: `/courses` — lists published courses with tier badges
+- **Course detail**: `/courses/[slug]` — modules, lessons, enroll button, progress
+- **Lesson viewer**: `/courses/[slug]/lessons/[lessonSlug]` — video embed, content, completion, nav
+- **Dashboard**: Updated with enrolled courses, progress bars, continue learning banner
 
-- [x] Server actions: `enrollInCourse`, `markLessonComplete`, `getCourseProgress` (`apps/app/app/actions/course.ts`)
-- [x] Course Catalog page (`/courses`) — lists all published courses with tier badges
-- [x] Course Detail page (`/courses/[slug]`) — modules, lessons, enroll button, progress
-- [x] Lesson Viewer (`/courses/[slug]/lessons/[lessonSlug]`) — video, content, completion, prev/next nav
-- [x] Sidebar updated with Courses navigation (GraduationCap icon)
-- [x] Dashboard updated with enrolled courses, progress, "continue learning" banner, discovery section
+## What's Pending
 
-### Next Steps
-
-- Phase 5: Admin UI for course/lesson management
-- Phase 6: Stripe payment gate for MINI/FULL tier courses
-- Run `prisma migrate dev` once database connection is available
-
-## Completed Work
-
-- Marketing site (`/apps/web`) deployed at `ai-builder-course-v2.vercel.app`
-- Branding updated (logo, colors, copy)
-- CTA and footer links fixed
-- Environment variables configured
-- GSD planning files created
-- Phase 1 schema and seed script committed
-- Full course platform UI (catalog, detail, lesson viewer, dashboard) built
+- `prisma migrate dev` — needs live database connection (Neon/Postgres env vars)
+- `prisma db seed` — populate sample data
+- Production smoke test and deploy
+- Stripe payment gate (Phase 6)
 
 ## Decisions Made
 
-- Payments (Stripe) deferred — keep MVP focused on content delivery
-- Video hosting via external URLs (YouTube/Loom/Vimeo embed) — no upload infrastructure needed
-- Clerk `userId` used as the user identifier in all course-related models
-- Free enrollment for MVP (no payment gate) — Phase 2 adds Stripe
-- Markdown content rendered as `whitespace-pre-wrap` — no markdown library dependency added
-- Enrollment check on lesson viewer server-side redirects unenrolled users to course detail
+- Payments deferred — keep MVP focused on content delivery
+- Video hosting via external URLs (YouTube/Loom/Vimeo embed)
+- Clerk `userId` as user identifier in all course models
+- Free enrollment for MVP, payment gate in Phase 6
+- Markdown rendered as `whitespace-pre-wrap` (may revisit for MDX)
+- Enrollment check server-side redirects unenrolled users
 
 ## Last Updated
 
-2026-03-21
+2026-03-22 — GSD project initialized; existing work from prior session captured

@@ -1,0 +1,97 @@
+<h2>Hoe moet een lespagina eruitzien?</h2>
+<p class="subtitle">Dit is de pagina waar studenten het meeste tijd doorbrengen. Kies de layout die het beste past bij jouw content (video + tekst + afbeeldingen).</p>
+
+<div class="cards">
+
+  <!-- Option A: Video-first -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: linear-gradient(135deg, #2c231a 0%, #3d3128 100%);">
+      <div style="font-family: system-ui; color: #f5f0e8; font-size: 11px;">
+        <!-- Video area -->
+        <div style="background: #1a1510; border-radius: 8px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #c4b5a0; display: flex; align-items: center; justify-content: center;">
+            <div style="width: 0; height: 0; border-left: 12px solid #c4b5a0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px;"></div>
+          </div>
+        </div>
+        <!-- Text below -->
+        <div style="background: #f5f0e8; border-radius: 6px; padding: 10px; color: #2c231a;">
+          <div style="font-weight: 600; font-size: 12px; margin-bottom: 6px;">Lestitel</div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 90%; margin-bottom: 4px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 75%; margin-bottom: 4px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 60%;"></div>
+          <div style="height: 40px; background: #e8dfd0; border-radius: 4px; margin-top: 8px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 80%; margin-top: 8px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 65%;margin-top: 4px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Video bovenaan, tekst eronder</h3>
+      <p>Video is de hoofdcontent. Scroll naar beneden voor ondersteunende tekst, afbeeldingen en opdrachten. Zoals YouTube + artikel.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Split view -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: linear-gradient(135deg, #2c231a 0%, #3d3128 100%);">
+      <div style="font-family: system-ui; color: #f5f0e8; font-size: 11px; display: flex; gap: 10px;">
+        <!-- Video left -->
+        <div style="flex: 1.2;">
+          <div style="background: #1a1510; border-radius: 8px; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+            <div style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #c4b5a0; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 0; height: 0; border-left: 8px solid #c4b5a0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px;"></div>
+            </div>
+          </div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 90%;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 70%; margin-top: 4px;"></div>
+        </div>
+        <!-- Text right -->
+        <div style="flex: 1; background: #f5f0e8; border-radius: 6px; padding: 8px; color: #2c231a;">
+          <div style="font-weight: 600; font-size: 10px; margin-bottom: 6px;">Notities</div>
+          <div style="height: 5px; background: #c4b5a0; border-radius: 3px; width: 90%; margin-bottom: 3px;"></div>
+          <div style="height: 5px; background: #c4b5a0; border-radius: 3px; width: 75%; margin-bottom: 3px;"></div>
+          <div style="height: 5px; background: #c4b5a0; border-radius: 3px; width: 85%; margin-bottom: 3px;"></div>
+          <div style="height: 5px; background: #c4b5a0; border-radius: 3px; width: 60%; margin-bottom: 3px;"></div>
+          <div style="height: 5px; background: #c4b5a0; border-radius: 3px; width: 70%;"></div>
+          <div style="height: 25px; background: #e8dfd0; border-radius: 3px; margin-top: 6px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Split: video links, content rechts</h3>
+      <p>Video en tekst naast elkaar zichtbaar. Ideaal als je wilt dat studenten meelezen tijdens het kijken. Voelt als een interactieve workshop.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Scrollable article -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: linear-gradient(135deg, #2c231a 0%, #3d3128 100%);">
+      <div style="font-family: system-ui; color: #f5f0e8; font-size: 11px;">
+        <div style="background: #f5f0e8; border-radius: 6px; padding: 10px; color: #2c231a;">
+          <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #2c231a;">Lestitel</div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 95%; margin-bottom: 4px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 80%; margin-bottom: 8px;"></div>
+          <!-- Embedded video -->
+          <div style="background: #1a1510; border-radius: 6px; height: 55px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+            <div style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid #c4b5a0; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 0; height: 0; border-left: 7px solid #c4b5a0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; margin-left: 2px;"></div>
+            </div>
+          </div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 90%; margin-bottom: 4px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 70%; margin-bottom: 8px;"></div>
+          <!-- Image -->
+          <div style="height: 35px; background: #e8dfd0; border-radius: 4px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #8b7355; font-size: 9px;">afbeelding</div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 85%; margin-bottom: 4px;"></div>
+          <div style="height: 6px; background: #c4b5a0; border-radius: 3px; width: 60%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Artikel-stijl: alles in de stroom</h3>
+      <p>Tekst, video's, afbeeldingen en opdrachten vloeien als één doorlopend artikel. Scroll door alles heen. Zoals een interactief blogpost of Notion-pagina.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; font-size: 13px;">Tip: optie C werkt het beste als je content een mix is van tekst, video's en afbeeldingen door elkaar. Optie A is ideaal als video altijd de hoofdrol speelt. Optie B is perfect voor "volg mee"-workshops.</p>

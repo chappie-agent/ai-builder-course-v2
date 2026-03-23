@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "mcp-image": {
+      "command": "npx",
+      "args": ["-y", "mcp-image"],
+      "env": {
+        "GEMINI_API_KEY": "AIzaSyAgmPauMuJ_BzggkvS9F_ateTRQw2PKELM",
+        "IMAGE_OUTPUT_DIR": "/tmp/generated-images",
+        "IMAGE_QUALITY": "balanced"
+      }
+    }
+  }
+}

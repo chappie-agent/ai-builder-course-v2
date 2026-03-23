@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instagram Design Keuze — AI Builder Course</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #1a140e;
+  color: #f5f0e8;
+  min-height: 100vh;
+  padding: 60px 40px;
+}
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.intro {
+  text-align: center;
+  color: #c4b5a0;
+  font-size: 18px;
+  margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.option {
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.option.selected {
+  outline: 3px solid #8b7355;
+  outline-offset: 4px;
+}
+.option.selected::after {
+  content: '✓ Geselecteerd';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #8b7355;
+  color: #f5f0e8;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 100px;
+  z-index: 10;
+}
+.option img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+.label {
+  padding: 20px 0 0;
+}
+.label h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f5f0e8;
+  margin-bottom: 6px;
+}
+.label p {
+  font-size: 15px;
+  color: #c4b5a0;
+  line-height: 1.5;
+}
+.tag {
+  display: inline-block;
+  background: rgba(139,115,85,0.15);
+  color: #8b7355;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+
+<h1>Welke stijl spreekt je aan?</h1>
+<p class="intro">Klik op het design dat het dichtst bij jouw gevoel zit. Mix-and-match mag ook — vertel me wat je van elk mooi of juist niet mooi vindt.</p>
+
+<div class="grid">
+
+  <div class="option" onclick="toggle(this)">
+    <img src="option-a.png" alt="Optie A">
+    <div class="label">
+      <span class="tag">Minimaal</span>
+      <h3>A — Clean & Editorial</h3>
+      <p>Strak, minimalistisch. Platte crème-achtergrond, links uitgelijnd, veel witruimte. Doet denken aan een premium magazine-layout.</p>
+    </div>
+  </div>
+
+  <div class="option" onclick="toggle(this)">
+    <img src="option-b.png" alt="Optie B">
+    <div class="label">
+      <span class="tag">Gelaagd</span>
+      <h3>B — Card op textuur</h3>
+      <p>Witte glasmorfisme-card op de warme hero-achtergrond met cross pattern. Pill-badge voor nummering. Gecentreerd, gelaagd gevoel.</p>
+    </div>
+  </div>
+
+  <div class="option" onclick="toggle(this)">
+    <img src="option-c.png" alt="Optie C">
+    <div class="label">
+      <span class="tag">Bold</span>
+      <h3>C — Dark & Cinematic</h3>
+      <p>Volledig donker met subtiele radiale glow. Links uitgelijnd, accent-lijn loopt door. Krachtig, premium, filmisch gevoel.</p>
+    </div>
+  </div>
+
+  <div class="option" onclick="toggle(this)">
+    <img src="option-d.png" alt="Optie D">
+    <div class="label">
+      <span class="tag">Hybride</span>
+      <h3>D — Glass card op donker</h3>
+      <p>Donkere achtergrond met cross pattern en een semi-transparante card met glaseffect. Groot nummer als decoratie. Donker + gestructureerd.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('selected');
+}
+</script>
+
+</body>
+</html>
