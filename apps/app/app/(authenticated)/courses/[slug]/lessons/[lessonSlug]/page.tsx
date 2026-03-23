@@ -267,24 +267,41 @@ const LessonPage = async ({ params }: LessonPageProps) => {
         </div>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
-            {/* Video Player */}
-            <div className="w-full overflow-hidden rounded-2xl bg-[#2c231a]">
-              {lesson.videoUrl ? (
-                <iframe
-                  src={lesson.videoUrl}
-                  className="aspect-video w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  title={lesson.title}
-                />
-              ) : (
-                <div className="flex aspect-video items-center justify-center">
-                  <p className="text-sm text-[#c4b5a0]">
-                    No video available for this lesson
-                  </p>
+            {/* Video Player — only show for real embed URLs, not placeholders */}
+            {(() => {
+              const hasRealVideo = lesson.videoUrl &&
+                !lesson.videoUrl.includes("placeholder") &&
+                (lesson.videoUrl.includes("/embed/") || lesson.videoUrl.includes("vimeo.com") || lesson.videoUrl.includes("loom.com"));
+
+              // Convert youtube watch URLs to embed URLs
+              let embedUrl = lesson.videoUrl;
+              if (lesson.videoUrl?.includes("youtube.com/watch")) {
+                const videoId = new URL(lesson.videoUrl).searchParams.get("v");
+                if (videoId && !lesson.videoUrl.includes("placeholder")) {
+                  embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+              }
+
+              return hasRealVideo ? (
+                <div className="w-full overflow-hidden rounded-2xl bg-[#2c231a]">
+                  <iframe
+                    src={embedUrl!}
+                    className="aspect-video w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title={lesson.title}
+                  />
                 </div>
-              )}
-            </div>
+              ) : lesson.videoUrl && !lesson.videoUrl.includes("placeholder") ? (
+                <div className="w-full overflow-hidden rounded-2xl bg-[#2c231a]">
+                  <div className="flex aspect-video items-center justify-center">
+                    <p className="text-sm text-[#c4b5a0]">
+                      Video wordt binnenkort toegevoegd
+                    </p>
+                  </div>
+                </div>
+              ) : null;
+            })()}
 
             {/* Lesson header */}
             <div className="flex items-start justify-between gap-4">
