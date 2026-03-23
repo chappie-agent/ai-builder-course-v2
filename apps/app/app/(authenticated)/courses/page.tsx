@@ -168,7 +168,7 @@ const CoursesPage = async () => {
                 href={`/courses/${course.slug}`}
                 className="group flex flex-col overflow-hidden rounded-xl border border-[#e8dfd0] bg-white transition-all duration-200 hover:border-[#c4b5a0] hover:shadow-md hover:shadow-[#2c231a]/5"
               >
-                {/* Thumbnail */}
+                {/* Thumbnail with title overlay */}
                 <div className="relative aspect-[16/10] overflow-hidden">
                   {course.imageUrl ? (
                     <img
@@ -177,25 +177,48 @@ const CoursesPage = async () => {
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2c231a] via-[#3d3127] to-[#4a3f33]">
-                      <div className="relative">
-                        <CodeIcon className="h-8 w-8 text-[#c4956a]/50" />
-                        <ZapIcon className="absolute -top-2 -right-3 h-4 w-4 text-[#c4b5a0]/40" />
-                      </div>
-                    </div>
+                    <div className="h-full w-full bg-gradient-to-br from-[#2c231a] via-[#3d3127] to-[#4a3f33]" />
                   )}
 
-                  {/* Tier badge */}
-                  <div className="absolute top-2 left-2">
-                    <Badge className="border-0 bg-black/50 text-[10px] text-white backdrop-blur-sm px-1.5 py-0.5">
-                      {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"}
-                    </Badge>
-                  </div>
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/30" />
 
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-black/0 transition-all duration-200 group-hover:bg-black/10" />
 
-                  {/* Progress bar at bottom of thumbnail */}
+                  {/* Title at top */}
+                  <div className="absolute top-0 left-0 right-0 p-3">
+                    <div className="mb-1.5 flex items-center gap-1.5">
+                      <Badge className="border-0 bg-white/20 text-[10px] text-white backdrop-blur-sm px-1.5 py-0.5">
+                        {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"}
+                      </Badge>
+                    </div>
+                    <h3 className="text-sm font-semibold text-white drop-shadow-sm line-clamp-2">
+                      {course.title}
+                    </h3>
+                  </div>
+
+                  {/* Stats at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <div className="flex items-center gap-2 text-[10px] text-white/70">
+                      <span className="flex items-center gap-0.5">
+                        <LayersIcon className="h-3 w-3" />
+                        {totalModules} module{totalModules !== 1 ? "s" : ""}
+                      </span>
+                      <span className="flex items-center gap-0.5">
+                        <BookOpenIcon className="h-3 w-3" />
+                        {totalLessons} lessen
+                      </span>
+                      {totalMinutes > 0 && (
+                        <span className="flex items-center gap-0.5">
+                          <ClockIcon className="h-3 w-3" />
+                          {Math.round(totalMinutes / 60)}h
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Progress bar at very bottom */}
                   {isEnrolled && progressPercent > 0 && (
                     <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
                       <div
@@ -206,37 +229,16 @@ const CoursesPage = async () => {
                   )}
                 </div>
 
-                {/* Content */}
-                <div className="flex flex-1 flex-col p-3">
-                  <h3 className="text-sm font-semibold text-[#2c231a] group-hover:text-[#8b7355] transition-colors line-clamp-1">
-                    {course.title}
-                  </h3>
+                {/* Description + status below thumbnail */}
+                <div className="flex flex-1 flex-col gap-2 p-3">
                   {course.description && (
-                    <p className="mt-0.5 line-clamp-2 text-xs text-[#8b7355]">
+                    <p className="line-clamp-2 text-xs text-[#8b7355]">
                       {course.description}
                     </p>
                   )}
 
-                  {/* Stats */}
-                  <div className="mt-2 flex items-center gap-2 text-[10px] text-[#8b7355]/60">
-                    <span className="flex items-center gap-0.5">
-                      <LayersIcon className="h-3 w-3" />
-                      {totalModules}
-                    </span>
-                    <span className="flex items-center gap-0.5">
-                      <BookOpenIcon className="h-3 w-3" />
-                      {totalLessons}
-                    </span>
-                    {totalMinutes > 0 && (
-                      <span className="flex items-center gap-0.5">
-                        <ClockIcon className="h-3 w-3" />
-                        {Math.round(totalMinutes / 60)}h
-                      </span>
-                    )}
-                  </div>
-
                   {/* Status */}
-                  <div className="mt-auto pt-2">
+                  <div className="mt-auto">
                     {isEnrolled ? (
                       <div className="flex items-center gap-2">
                         {isComplete ? (
@@ -281,54 +283,49 @@ const CoursesPage = async () => {
                 key={course.id}
                 className="group flex flex-col overflow-hidden rounded-xl border border-[#e8dfd0] bg-white opacity-75 transition-all duration-200 hover:opacity-90"
               >
-                {/* Thumbnail */}
+                {/* Thumbnail with title overlay */}
                 <div className={`relative aspect-[16/10] overflow-hidden bg-gradient-to-br ${course.gradient}`}>
-                  <div className="flex h-full w-full items-center justify-center">
-                    <div className="relative">
-                      <Icon className="h-8 w-8" style={{ color: `${course.accentColor}80` }} />
-                      <SecondaryIcon
-                        className="absolute -top-1.5 -right-3 h-4 w-4"
-                        style={{ color: `${course.accentColor}50` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Coming soon badge */}
-                  <div className="absolute top-2 left-2">
-                    <Badge className="border-0 bg-[#c4956a]/80 text-[10px] text-white px-1.5 py-0.5">
-                      Coming Soon
-                    </Badge>
-                  </div>
-
                   {/* Subtle pattern overlay */}
                   <div className="absolute inset-0 opacity-10" style={{
                     backgroundImage: `radial-gradient(circle at 20% 80%, ${course.accentColor}40 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${course.accentColor}30 0%, transparent 50%)`,
                   }} />
-                </div>
 
-                {/* Content */}
-                <div className="flex flex-1 flex-col p-3">
-                  <h3 className="text-sm font-semibold text-[#2c231a] line-clamp-1">
-                    {course.title}
-                  </h3>
-                  <p className="mt-0.5 line-clamp-2 text-xs text-[#8b7355]">
-                    {course.description}
-                  </p>
+                  {/* Gradient for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30" />
 
-                  {/* Stats */}
-                  <div className="mt-2 flex items-center gap-2 text-[10px] text-[#8b7355]/60">
-                    <span className="flex items-center gap-0.5">
-                      <LayersIcon className="h-3 w-3" />
-                      {course.modules}
-                    </span>
-                    <span className="flex items-center gap-0.5">
-                      <BookOpenIcon className="h-3 w-3" />
-                      {course.lessons}
-                    </span>
+                  {/* Title at top */}
+                  <div className="absolute top-0 left-0 right-0 p-3">
+                    <div className="mb-1.5">
+                      <Badge className="border-0 bg-[#c4956a]/80 text-[10px] text-white px-1.5 py-0.5">
+                        Coming Soon
+                      </Badge>
+                    </div>
+                    <h3 className="text-sm font-semibold text-white drop-shadow-sm line-clamp-2">
+                      {course.title}
+                    </h3>
                   </div>
 
-                  {/* Coming soon label */}
-                  <div className="mt-auto pt-2">
+                  {/* Stats at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <div className="flex items-center gap-2 text-[10px] text-white/70">
+                      <span className="flex items-center gap-0.5">
+                        <LayersIcon className="h-3 w-3" />
+                        {course.modules} modules
+                      </span>
+                      <span className="flex items-center gap-0.5">
+                        <BookOpenIcon className="h-3 w-3" />
+                        {course.lessons} lessen
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description + status below */}
+                <div className="flex flex-1 flex-col gap-2 p-3">
+                  <p className="line-clamp-2 text-xs text-[#8b7355]">
+                    {course.description}
+                  </p>
+                  <div className="mt-auto">
                     <span className="text-[10px] font-medium text-[#c4956a]">
                       Binnenkort beschikbaar
                     </span>
