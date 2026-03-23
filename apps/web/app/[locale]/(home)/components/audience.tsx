@@ -3,16 +3,19 @@ const audience = [
     title: "Creators who want to build",
     description:
       "Turn ideas, moodboards, and rough concepts into real interfaces, workflows, and digital products.",
+    image: "/audience-creators.png",
   },
   {
     title: "Developers who want leverage",
     description:
       "Use AI to write, debug, structure, and ship faster without losing quality or control.",
+    image: "/audience-developers.png",
   },
   {
     title: "Founders and operators",
     description:
       "Design AI workflows, automations, and agent systems that save time and create actual business value.",
+    image: "/audience-founders.png",
   },
 ];
 
@@ -34,24 +37,23 @@ export const Audience = () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {audience.map((item, index) => (
+            {audience.map((item) => (
               <div
                 key={item.title}
-                className="group relative overflow-hidden rounded-[1.5rem] border border-[#e8dfd0]/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(246,238,228,0.92))] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#cfb89e]/70 hover:shadow-[0_20px_40px_rgba(112,83,55,0.08)]"
+                className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-[1.5rem] border border-[#e8dfd0]/60 transition-all duration-300 hover:-translate-y-1 hover:border-[#cfb89e]/70 hover:shadow-[0_20px_40px_rgba(112,83,55,0.08)]"
               >
+                {/* Background image */}
                 <div
-                  className={`pointer-events-none absolute inset-0 opacity-80 transition-transform duration-500 group-hover:scale-[1.03] ${
-                    index === 0
-                      ? "bg-[radial-gradient(circle_at_top_left,rgba(216,194,170,0.38),transparent_45%),linear-gradient(135deg,transparent,rgba(201,177,151,0.10))]"
-                      : index === 1
-                        ? "bg-[radial-gradient(circle_at_top_right,rgba(227,212,194,0.42),transparent_42%),linear-gradient(180deg,transparent,rgba(191,170,146,0.10))]"
-                        : "bg-[radial-gradient(circle_at_bottom_right,rgba(214,195,172,0.36),transparent_44%),linear-gradient(135deg,rgba(255,255,255,0.18),transparent)]"
-                  }`}
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${item.image})` }}
                 />
-                <div className="pointer-events-none absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(#8b7355 0.6px, transparent 0.6px)", backgroundSize: "18px 18px" }} />
-                <div className="relative transition-transform duration-300 group-hover:-translate-y-0.5">
-                  <h3 className="text-lg font-medium text-[#2c231a]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-[#6b5c4c]/75">
+
+                {/* Text overlay with gradient for readability */}
+                <div className="relative z-10 bg-gradient-to-t from-[#2c231a]/90 via-[#2c231a]/60 to-transparent p-5 pt-16">
+                  <h3 className="text-lg font-medium text-[#f5f0e8]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#f5f0e8]/75">
                     {item.description}
                   </p>
                 </div>
