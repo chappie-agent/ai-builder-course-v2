@@ -9,8 +9,10 @@ import { Hero } from "./components/hero";
 import { Instructor } from "./components/instructor";
 import { Modules } from "./components/modules";
 import { NavBar } from "./components/nav-bar";
+import { Outcomes } from "./components/outcomes";
 import { SiteFooter } from "./components/site-footer";
 import { SocialProof } from "./components/social-proof";
+import { StatsBar } from "./components/stats-bar";
 
 interface HomeProps {
   params: Promise<{
@@ -35,7 +37,9 @@ const Home = async ({ params }: HomeProps) => {
       <NavBar />
       <main className="min-h-screen bg-[linear-gradient(180deg,#d6c4b4_0%,#eee5da_18%,#f7f2ea_42%,#fbf8f3_100%)] text-[#2c231a]">
         <Hero />
+        <StatsBar />
         <Audience />
+        <Outcomes />
         <Modules />
         <Curriculum />
         <Instructor />
