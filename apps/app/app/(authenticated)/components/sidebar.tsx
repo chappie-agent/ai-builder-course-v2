@@ -85,10 +85,10 @@ export const GlobalSidebar = ({ children, course }: GlobalSidebarProperties) => 
   const lessonSlugMatch = pathname.match(/\/lessons\/([^/]+)/);
   const currentLessonSlug = lessonSlugMatch?.[1] ?? null;
 
-  // On course pages (detail + lessons), hide — these pages have their own sidebar
-  const isCourseDetailOrLesson = pathname.match(/\/courses\/[^/]+(\/|$)/);
+  // On all /courses pages, hide — these pages have their own navigation
+  const isCoursesPage = pathname.startsWith("/courses");
 
-  if (isCourseDetailOrLesson) {
+  if (isCoursesPage) {
     return <div className="flex min-h-screen w-full flex-col">{children}</div>;
   }
 

@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { auth } from "@repo/auth/server";
+import { UserButton } from "@repo/auth/client";
 import { database } from "@repo/database";
 import { Badge } from "@repo/design-system/components/ui/badge";
 import { Progress } from "@repo/design-system/components/ui/progress";
@@ -12,8 +13,10 @@ import {
   BotIcon,
   CheckCircle2Icon,
   ClockIcon,
+  CodeIcon,
   ImageIcon,
   LayersIcon,
+  SettingsIcon,
   SparklesIcon,
   VideoIcon,
   WrenchIcon,
@@ -91,17 +94,56 @@ const CoursesPage = async () => {
   const completedSet = new Set(completedProgress.map((p) => p.lessonId));
 
   return (
-    <div className="flex flex-1 flex-col">
-      {/* Header */}
-      <div className="border-b border-[#e8dfd0] bg-[#faf7f2] px-6 py-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-[#2c231a]">Courses</h1>
-        <p className="mt-1 text-sm text-[#8b7355]">
-          Ontdek alle beschikbare cursussen en start met leren.
-        </p>
-      </div>
+    <div className="flex min-h-screen flex-col bg-[#faf7f2]">
+      {/* ─── Top Navigation ─── */}
+      <header className="sticky top-0 z-30 border-b border-[#e8dfd0] bg-[#faf7f2]/95 backdrop-blur-sm">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
+          {/* Left: Logo + nav */}
+          <div className="flex items-center gap-6">
+            <Link href="/courses" className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2c231a]">
+                <SparklesIcon className="h-4 w-4 text-[#c4956a]" />
+              </div>
+              <span className="text-sm font-semibold text-[#2c231a]">AI Builder</span>
+            </Link>
+            <nav className="flex items-center gap-1">
+              <span className="rounded-md bg-[#2c231a]/5 px-3 py-1.5 text-sm font-medium text-[#2c231a]">
+                Courses
+              </span>
+            </nav>
+          </div>
 
-      {/* Course Grid */}
-      <div className="flex-1 p-6">
+          {/* Right: Settings + User */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/settings"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-[#8b7355] transition-colors hover:bg-[#e8dfd0] hover:text-[#2c231a]"
+            >
+              <SettingsIcon className="h-4 w-4" />
+            </Link>
+            <UserButton
+              appearance={{
+                elements: {
+                  rootBox: "flex",
+                  avatarBox: "h-8 w-8",
+                },
+              }}
+            />
+          </div>
+        </div>
+      </header>
+
+      {/* ─── Page Content ─── */}
+      <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
+        {/* Page header */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#2c231a]">Courses</h1>
+          <p className="mt-1 text-sm text-[#8b7355]">
+            Ontdek alle beschikbare cursussen en start met leren.
+          </p>
+        </div>
+
+        {/* Course Grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Real courses from DB */}
           {courses.map((course) => {
@@ -137,8 +179,8 @@ const CoursesPage = async () => {
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2c231a] via-[#3d3127] to-[#4a3f33]">
                       <div className="relative">
-                        <ZapIcon className="h-8 w-8 text-[#c4956a]/50" />
-                        <SparklesIcon className="absolute -top-2 -right-3 h-4 w-4 text-[#c4b5a0]/40" />
+                        <CodeIcon className="h-8 w-8 text-[#c4956a]/50" />
+                        <ZapIcon className="absolute -top-2 -right-3 h-4 w-4 text-[#c4b5a0]/40" />
                       </div>
                     </div>
                   )}
@@ -296,7 +338,7 @@ const CoursesPage = async () => {
             );
           })}
         </div>
-      </div>
+      </main>
     </div>
   );
 };
