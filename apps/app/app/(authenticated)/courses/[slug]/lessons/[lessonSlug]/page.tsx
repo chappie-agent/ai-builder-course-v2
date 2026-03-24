@@ -12,6 +12,7 @@ import { markLessonComplete, markLessonIncomplete } from "@/app/actions/course";
 import { UserButton } from "@repo/auth/client";
 import { SidebarToggle } from "./sidebar-toggle";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { LessonTabs } from "./lesson-tabs";
 import {
   BookOpenIcon,
   CheckCircle2Icon,
@@ -361,47 +362,52 @@ const LessonPage = async ({ params }: LessonPageProps) => {
               <MarkdownRenderer content={lesson.content} />
             )}
 
-            {/* Course Summary */}
-            <div className="rounded-2xl border border-[#e8dfd0] bg-[#faf7f2] p-5">
-              <p className="mb-4 text-sm font-semibold text-[#2c231a]">Summary</p>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
-                <div className="flex items-center gap-2.5">
-                  <SignalIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">
-                    {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"} tier
-                  </span>
+            {/* Tabs: Overzicht, Notities, Extra's, Feedback */}
+            <LessonTabs
+              lessonId={lesson.id}
+              summaryContent={
+                <div className="rounded-2xl border border-[#e8dfd0] bg-[#faf7f2] p-5">
+                  <p className="mb-4 text-sm font-semibold text-[#2c231a]">Samenvatting</p>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                    <div className="flex items-center gap-2.5">
+                      <SignalIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">
+                        {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"} tier
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <BookOpenIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">
+                        {allLessons.length} les{allLessons.length !== 1 ? "sen" : ""}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <LayersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">
+                        {course.modules.length} module{course.modules.length !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <ClockIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">
+                        {(() => {
+                          const totalMin = allLessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
+                          return totalMin > 0 ? `${Math.round(totalMin / 60)}u totaal` : "—";
+                        })()}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <GraduationCapIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">Certificaat</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <UsersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
+                      <span className="text-sm text-[#6b5c4c]">Community toegang</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <BookOpenIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">
-                    {allLessons.length} lesson{allLessons.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <LayersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">
-                    {course.modules.length} module{course.modules.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <ClockIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">
-                    {(() => {
-                      const totalMin = allLessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
-                      return totalMin > 0 ? `${Math.round(totalMin / 60)}h total` : "—";
-                    })()}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <GraduationCapIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">Certificate</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <UsersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                  <span className="text-sm text-[#6b5c4c]">Community access</span>
-                </div>
-              </div>
-            </div>
+              }
+            />
 
             {/* Navigation */}
             <div className="flex items-center justify-between border-t border-[#e8dfd0] pt-4">
