@@ -357,52 +357,49 @@ const LessonPage = async ({ params }: LessonPageProps) => {
               )}
             </div>
 
-            {/* Lesson Content */}
-            {lesson.content && (
-              <MarkdownRenderer content={lesson.content} />
-            )}
-
             {/* Tabs: Overzicht, Notities, Extra's, Feedback */}
             <LessonTabs
               lessonId={lesson.id}
               summaryContent={
-                <div className="rounded-2xl border border-[#e8dfd0] bg-[#faf7f2] p-5">
-                  <p className="mb-4 text-sm font-semibold text-[#2c231a]">Samenvatting</p>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
-                    <div className="flex items-center gap-2.5">
-                      <SignalIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">
-                        {course.tier === "FREE" ? "Free" : course.tier === "MINI" ? "Mini" : "Full"} tier
+                <div className="space-y-5">
+                  {/* Lesson description / content */}
+                  {lesson.content && (
+                    <div>
+                      <p className="mb-3 text-sm font-semibold text-[#2c231a]">Over deze les</p>
+                      <MarkdownRenderer content={lesson.content} />
+                    </div>
+                  )}
+
+                  {/* Course stats */}
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-[#e8dfd0] pt-4">
+                    <div className="flex items-center gap-1.5">
+                      <BookOpenIcon className="h-3.5 w-3.5 text-[#8b7355]" />
+                      <span className="text-xs text-[#6b5c4c]">
+                        {allLessons.length} lessen
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <BookOpenIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">
-                        {allLessons.length} les{allLessons.length !== 1 ? "sen" : ""}
+                    <div className="flex items-center gap-1.5">
+                      <LayersIcon className="h-3.5 w-3.5 text-[#8b7355]" />
+                      <span className="text-xs text-[#6b5c4c]">
+                        {course.modules.length} modules
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <LayersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">
-                        {course.modules.length} module{course.modules.length !== 1 ? "s" : ""}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <ClockIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">
+                    <div className="flex items-center gap-1.5">
+                      <ClockIcon className="h-3.5 w-3.5 text-[#8b7355]" />
+                      <span className="text-xs text-[#6b5c4c]">
                         {(() => {
                           const totalMin = allLessons.reduce((acc, l) => acc + (l.duration ?? 0), 0);
                           return totalMin > 0 ? `${Math.round(totalMin / 60)}u totaal` : "—";
                         })()}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <GraduationCapIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">Certificaat</span>
+                    <div className="flex items-center gap-1.5">
+                      <GraduationCapIcon className="h-3.5 w-3.5 text-[#8b7355]" />
+                      <span className="text-xs text-[#6b5c4c]">Certificaat</span>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <UsersIcon className="h-4 w-4 shrink-0 text-[#8b7355]" />
-                      <span className="text-sm text-[#6b5c4c]">Community toegang</span>
+                    <div className="flex items-center gap-1.5">
+                      <UsersIcon className="h-3.5 w-3.5 text-[#8b7355]" />
+                      <span className="text-xs text-[#6b5c4c]">Community</span>
                     </div>
                   </div>
                 </div>
