@@ -18,7 +18,51 @@ const curriculum = [
         slug: 'how-llms-work',
         order: 1,
         videoUrl: 'https://www.youtube.com/watch?v=placeholder-1-1',
-        content: `# How Large Language Models Work\n\nIn this lesson we explore the transformer architecture and how LLMs are trained on massive text corpora to develop emergent reasoning capabilities.\n\n## Key Concepts\n\n- Tokenization and embeddings\n- Attention mechanisms\n- Pre-training vs fine-tuning\n- Prompt engineering fundamentals`,
+        content: `# How Large Language Models Work
+
+In deze les verkennen we de transformer-architectuur en hoe Large Language Models (LLMs) worden getraind op enorme hoeveelheden tekst om emergente redeneercapaciteiten te ontwikkelen.
+
+## Wat is een LLM?
+
+Een Large Language Model is een neuraal netwerk dat getraind is om tekst te begrijpen en te genereren. Het model leert patronen uit miljarden woorden en kan vervolgens nieuwe tekst produceren die coherent en contextbewust is.
+
+### De basis: Tokenization
+
+Voordat tekst het model in gaat, wordt het opgesplitst in **tokens**. Een token kan een woord zijn, een deel van een woord, of een leesteken. Bijvoorbeeld:
+
+- "Hallo wereld" → \`["Hallo", " wereld"]\`
+- "ongelooflijk" → \`["onge", "loof", "lijk"]\`
+
+> **Tip:** Je kunt het aantal tokens in je prompt berekenen met tools als de OpenAI tokenizer. Gemiddeld geldt: 1 token ≈ 0.75 woorden in het Nederlands.
+
+## De Transformer-architectuur
+
+Het hart van elk modern LLM is de **transformer**. Dit model gebruikt een mechanisme genaamd **self-attention** om te begrijpen welke woorden in een zin belangrijk zijn voor het begrijpen van andere woorden.
+
+### Self-Attention in de praktijk
+
+Stel je de zin voor: *"De kat zat op de mat omdat hij moe was."*
+
+Het model moet begrijpen dat "hij" verwijst naar "de kat" — niet naar "de mat". Self-attention berekent voor elk woord een score die aangeeft hoe relevant andere woorden zijn.
+
+## Training: Pre-training vs Fine-tuning
+
+LLMs worden in twee fasen getraind:
+
+1. **Pre-training** — Het model leest miljarden pagina's tekst en leert taalpatronen, feiten en redeneervaardigheden
+2. **Fine-tuning** — Het model wordt verfijnd op specifieke taken met behulp van menselijke feedback (RLHF)
+
+### Waarom dit belangrijk is voor jou
+
+Als je een AI-applicatie bouwt, hoef je het model niet zelf te trainen. Je gebruikt een **pre-trained model** via een API en stuurt het de juiste instructies — dat is waar prompt engineering om de hoek komt kijken.
+
+## Samenvatting
+
+- LLMs zijn neurale netwerken getraind op enorme hoeveelheden tekst
+- Ze gebruiken de transformer-architectuur met self-attention
+- Tokenization zet tekst om naar numerieke representaties
+- Pre-training + fine-tuning maakt modellen bruikbaar voor specifieke taken
+- Als developer gebruik je deze modellen via API's — de training is al gedaan`,
         duration: 22,
       },
       {
